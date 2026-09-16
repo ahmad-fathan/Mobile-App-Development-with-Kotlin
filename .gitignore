@@ -1,0 +1,7 @@
+# Berkas hasil build dan konfigurasi lokal
+.gradle/
+build/
+out/
+.idea/
+*.iml
+.DS_Store
