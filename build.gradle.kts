@@ -9,6 +9,16 @@ repositories {
     mavenCentral()
 }
 
+// Setiap modul punya folder sendiri di root proyek, mis. modul-02-kotlin-programming-essentials/.
+// Berkas .kt di dalamnya cukup dikompilasi tanpa harus memakai deklarasi package.
+sourceSets {
+    main {
+        kotlin.setSrcDirs(listOf("."))
+        kotlin.include("modul-*/**/*.kt")
+        resources.setSrcDirs(emptyList<String>())
+    }
+}
+
 kotlin {
     compilerOptions {
         jvmTarget = JvmTarget.JVM_17
@@ -21,7 +31,7 @@ java {
 }
 
 application {
-    mainClass = "id.uii.mad.modul02.MainKt"
+    mainClass = "MainKt"
 }
 
 tasks.named<JavaExec>("run") {

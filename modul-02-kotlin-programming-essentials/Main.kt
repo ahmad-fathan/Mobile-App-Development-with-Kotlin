@@ -1,11 +1,3 @@
-package id.uii.mad.modul02
-
-import id.uii.mad.modul02.latihan.latihan1Pertemuan
-import id.uii.mad.modul02.latihan.latihan2RataRata
-import id.uii.mad.modul02.latihan.latihan3Kelulusan
-import id.uii.mad.modul02.latihan.latihan4NamaBulan
-import id.uii.mad.modul02.latihan.latihan5TotalSks
-
 /**
  * Titik masuk seluruh contoh Modul 2.
  *

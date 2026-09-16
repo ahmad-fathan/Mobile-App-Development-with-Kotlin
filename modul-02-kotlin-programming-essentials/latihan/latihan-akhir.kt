@@ -1,5 +1,3 @@
-package id.uii.mad.modul02.latihan
-
 /**
  * Latihan Akhir Modul 2 — lima soal yang menggabungkan seluruh konsep.
  */

@@ -1,5 +1,3 @@
-package id.uii.mad.modul02
-
 /**
  * Bab 2 — Tipe Data dan Operator
  */

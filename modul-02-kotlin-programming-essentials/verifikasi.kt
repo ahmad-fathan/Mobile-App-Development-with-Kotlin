@@ -1,10 +1,3 @@
-package id.uii.mad.modul02
-
-import id.uii.mad.modul02.latihan.hitungRataRata
-import id.uii.mad.modul02.latihan.hitungTotalSks
-import id.uii.mad.modul02.latihan.keteranganKelulusan
-import id.uii.mad.modul02.latihan.namaBulan
-
 /**
  * Verifikasi otomatis untuk seluruh fungsi yang bisa diuji tanpa masukan keyboard.
  * Jalankan dengan: ./gradlew run --args=verifikasi

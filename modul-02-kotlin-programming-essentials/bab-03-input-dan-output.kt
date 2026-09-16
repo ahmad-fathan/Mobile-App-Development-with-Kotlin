@@ -1,5 +1,3 @@
-package id.uii.mad.modul02
-
 /**
  * Bab 3 — Input dan Output di Console
  *

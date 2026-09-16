@@ -1,5 +1,3 @@
-package id.uii.mad.modul02
-
 /**
  * Bab 4 — Percabangan dengan if dan when
  */

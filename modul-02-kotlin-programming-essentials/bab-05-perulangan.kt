@@ -1,5 +1,3 @@
-package id.uii.mad.modul02
-
 /**
  * Bab 5 — Perulangan
  */
