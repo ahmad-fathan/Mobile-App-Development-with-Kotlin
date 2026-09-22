@@ -11,10 +11,16 @@ repositories {
 
 // Setiap modul punya folder sendiri di root proyek, mis. modul-02-kotlin-programming-essentials/.
 // Berkas .kt di dalamnya cukup dikompilasi tanpa harus memakai deklarasi package.
+//
+// Karena tiap modul memakai nama berkas yang sama (Main.kt, verifikasi.kt, latihan/latihan-akhir.kt),
+// hanya satu modul yang dikompilasi pada satu waktu supaya nama kelas JVM tidak bertabrakan.
+// Pilih modul dengan -Pmodul=<nomor>, mis. ./gradlew run -Pmodul=03
+val modulAktif = (findProperty("modul") as String?)?.trim() ?: "02"
+
 sourceSets {
     main {
         kotlin.setSrcDirs(listOf("."))
-        kotlin.include("modul-*/**/*.kt")
+        kotlin.include("modul-$modulAktif-*/**/*.kt")
         resources.setSrcDirs(emptyList<String>())
     }
 }
