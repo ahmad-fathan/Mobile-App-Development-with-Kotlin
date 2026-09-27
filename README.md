@@ -31,6 +31,7 @@ Setiap folder modul dapat dijalankan sendiri, jadi nama berkas yang sama (`Main.
 ```
 .
 ├── README.md
+├── jalankan.sh                                  # kompilasi + jalankan satu modul
 ├── modul-02-kotlin-programming-essentials/
 │   ├── Main.kt                                  # titik masuk + menu contoh
 │   ├── bab-01-struktur-program-dan-variabel.kt
@@ -76,7 +77,44 @@ Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-05-.../`
 
 ## Menjalankan
 
-Butuh **JDK 17+** dan **Kotlin compiler (`kotlinc`)**. Install compiler:
+Tidak perlu Gradle, tidak perlu emulator, dan tidak perlu membuat proyek Android. Ada tiga cara, pilih yang paling nyaman.
+
+### Cara 1 — Skrip `jalankan.sh` (paling singkat)
+
+Dari root repositori:
+
+```bash
+./jalankan.sh                 # menu contoh modul 02 (interaktif)
+./jalankan.sh 03              # menu contoh modul 03
+./jalankan.sh 03 verifikasi   # pemeriksaan otomatis modul 03
+```
+
+Skrip ini mencari sendiri compiler Kotlin: memakai `kotlinc` bawaan Android Studio bila ada, jika tidak memakai `kotlinc` dari `PATH`. Jadi bila Android Studio sudah terpasang, tidak ada yang perlu di-install lagi.
+
+### Cara 2 — Terminal di dalam Android Studio
+
+1. **File → Open**, pilih **folder modul**, misalnya `modul-04-kotlin-specific-features-dan-collections`. Jangan pilih root repositori, dan jangan memakai **New Project** — tidak diperlukan `build.gradle` sama sekali.
+2. Buka Terminal di Android Studio (`⌥F12` di macOS, `Alt+F12` di Windows/Linux).
+3. Jalankan:
+
+```bash
+K="/Applications/Android Studio.app/Contents/plugins/Kotlin/kotlinc/bin/kotlinc"   # macOS
+"$K" . -include-runtime -d app.jar
+java -jar app.jar                # menu contoh interaktif
+java -jar app.jar verifikasi     # pemeriksaan otomatis
+```
+
+Di Windows, compiler bawaan Android Studio ada di `C:\Program Files\Android\Android Studio\plugins\Kotlin\kotlinc\bin\kotlinc.bat`.
+
+### Cara 3 — Tombol Run hijau
+
+Setelah folder modul dibuka, buka `Main.kt` lalu klik ikon **Run** (segitiga hijau) di gutter pada baris `fun main`, dan pilih `Run 'MainKt'`.
+
+Hanya `Main.kt` yang punya `fun main`, karena itu hanya berkas itu yang menampilkan tombol Run. Berkas `bab-*.kt` sengaja hanya berisi contoh dan fungsi, jadi tidak dapat dijalankan sendiri — itu memang rancangannya, bukan kesalahan.
+
+### Tanpa Android Studio
+
+Butuh **JDK 17+** dan **Kotlin compiler (`kotlinc`)**:
 
 ```bash
 # macOS
@@ -86,19 +124,8 @@ brew install kotlin
 # lalu tambahkan folder bin/ ke PATH
 ```
 
-Kompilasi satu modul menjadi satu berkas `.jar`, lalu jalankan:
-
 ```bash
 cd modul-03-oop-dan-null-safety
-kotlinc . -include-runtime -d app.jar
-java -jar app.jar                # menu contoh interaktif
-java -jar app.jar verifikasi     # pemeriksaan otomatis
-```
-
-Ganti nama foldernya untuk modul lain, misalnya:
-
-```bash
-cd modul-02-kotlin-programming-essentials
 kotlinc . -include-runtime -d app.jar
 java -jar app.jar verifikasi
 ```
