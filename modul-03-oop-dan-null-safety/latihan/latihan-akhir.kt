@@ -51,11 +51,14 @@ fun latihan1SmartDevice() {
 fun latihan2NullSafety() {
     var studentName: String? = null
 
+    // Nilainya masih null: safe call menghasilkan null, lalu Elvis memberi nilai pengganti.
     println(studentName?.length ?: "Unknown")
     println(studentName ?: "Unknown")
 
+    // Setelah diisi teks, compiler tahu variabel ini tidak lagi null (smart cast),
+    // sehingga .length dapat dipakai langsung tanpa safe call.
     studentName = "Andi"
-    println(studentName?.length ?: "Unknown")
+    println(studentName.length)
 }
 
 /**

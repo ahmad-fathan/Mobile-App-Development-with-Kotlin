@@ -1,4 +1,5 @@
 # Berkas hasil build dan konfigurasi lokal
+*.jar
 .gradle/
 build/
 out/

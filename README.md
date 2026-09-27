@@ -2,6 +2,8 @@
 
 Source code contoh dan latihan untuk mata kuliah **Pengembangan Aplikasi Bergerak**, Program Studi Sarjana Informatika, Universitas Islam Indonesia.
 
+Seluruh berkas di repositori ini adalah **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalankan tanpa Gradle maupun Android Studio. Framework Android (Jetpack Compose) belum dipakai karena mahasiswa belum mempelajarinya.
+
 ## Daftar modul
 
 | Modul | Judul |
@@ -23,13 +25,10 @@ Di dalamnya, setiap bab modul menjadi satu berkas dengan pola:
 bab-<nomor>-<judul-bab-dalam-huruf-kecil>.kt
 ```
 
-Contoh nyata:
+Setiap folder modul dapat dijalankan sendiri, jadi nama berkas yang sama (`Main.kt`, `verifikasi.kt`, `latihan/latihan-akhir.kt`) boleh muncul di setiap modul.
 
 ```
 .
-├── build.gradle.kts
-├── settings.gradle.kts
-├── gradlew, gradlew.bat, gradle/wrapper/        # Gradle Wrapper
 ├── README.md
 ├── modul-02-kotlin-programming-essentials/
 │   ├── Main.kt                                  # titik masuk + menu contoh
@@ -56,20 +55,38 @@ Contoh nyata:
         └── latihan-akhir.kt                     # latihan akhir modul
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-04-jetpack-compose-dasar/`, tanpa mengubah konfigurasi Gradle. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-04-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
-Karena setiap modul memakai nama berkas yang sama (`Main.kt`, `verifikasi.kt`, `latihan/latihan-akhir.kt`), satu waktu hanya mengompilasi satu modul. Pilih modul dengan `-Pmodul=<nomor>`; tanpa opsi itu modul 02 yang dipakai.
+Butuh **JDK 17+** dan **Kotlin compiler (`kotlinc`)**. Install compiler:
 
 ```bash
-./gradlew run                             # menu contoh interaktif modul 02
-./gradlew run --args=verifikasi           # pemeriksaan otomatis modul 02
-./gradlew run -Pmodul=03                  # menu contoh interaktif modul 03
-./gradlew run -Pmodul=03 --args=verifikasi # pemeriksaan otomatis modul 03
+# macOS
+brew install kotlin
+
+# Windows: unduh kotlin-compiler-*.zip dari https://github.com/JetBrains/kotlin/releases
+# lalu tambahkan folder bin/ ke PATH
 ```
 
-Butuh JDK 17+ (Android Studio sudah menyertakan JDK bawaan). Gradle tidak perlu dipasang.
+Kompilasi satu modul menjadi satu berkas `.jar`, lalu jalankan:
+
+```bash
+cd modul-03-oop-dan-null-safety
+kotlinc . -include-runtime -d app.jar
+java -jar app.jar                # menu contoh interaktif
+java -jar app.jar verifikasi     # pemeriksaan otomatis
+```
+
+Ganti nama foldernya untuk modul lain, misalnya:
+
+```bash
+cd modul-02-kotlin-programming-essentials
+kotlinc . -include-runtime -d app.jar
+java -jar app.jar verifikasi
+```
+
+Opsi `-include-runtime` diperlukan agar berkas `.jar` dapat langsung dijalankan tanpa menyertakan library Kotlin secara terpisah. Berkas `app.jar` adalah hasil build dan tidak perlu ikut di-commit.
 
 ## Penggunaan
 
