@@ -10,6 +10,7 @@ Seluruh berkas di repositori ini adalah **Kotlin murni (`.kt`)** yang dapat diko
 | --- | --- |
 | 02 | Kotlin Programming Essentials |
 | 03 | OOP in Kotlin & Null Safety |
+| 04 | Kotlin-Specific Features & Collections |
 
 ## Struktur folder
 
@@ -42,20 +43,36 @@ Setiap folder modul dapat dijalankan sendiri, jadi nama berkas yang sama (`Main.
 │   └── latihan/
 │       └── latihan-akhir.kt                     # latihan akhir modul
 └── modul-03-oop-dan-null-safety/
-    ├── Main.kt                                  # titik masuk + menu contoh
-    ├── bab-01-class-dan-object.kt
-    ├── bab-02-constructor-getter-dan-setter.kt
-    ├── bab-03-inheritance.kt
-    ├── bab-04-abstract-class-dan-interface.kt
-    ├── bab-05-visibility-modifier.kt
-    ├── bab-06-null-safety.kt
-    ├── bab-07-smart-cast.kt
-    ├── verifikasi.kt                            # pemeriksaan otomatis
+│   ├── Main.kt                                  # titik masuk + menu contoh
+│   ├── bab-01-class-dan-object.kt
+│   ├── bab-02-constructor-getter-dan-setter.kt
+│   ├── bab-03-inheritance.kt
+│   ├── bab-04-abstract-class-dan-interface.kt
+│   ├── bab-05-visibility-modifier.kt
+│   ├── bab-06-null-safety.kt
+│   ├── bab-07-smart-cast.kt
+│   ├── verifikasi.kt                            # pemeriksaan otomatis
+│   └── latihan/
+│       └── latihan-akhir.kt                     # latihan akhir modul
+└── modul-04-kotlin-specific-features-dan-collections/
+    ├── Main.kt
+    ├── bab-01-data-class.kt
+    ├── bab-02-enum-class.kt
+    ├── bab-03-object-dan-companion-object.kt
+    ├── bab-04-extension-function.kt
+    ├── bab-05-array.kt
+    ├── bab-06-collection-read-only-dan-mutable.kt
+    ├── bab-07-list-dan-mutablelist.kt
+    ├── bab-08-set-dan-mutableset.kt
+    ├── bab-09-map-dan-mutablemap.kt
+    ├── bab-10-memilih-dan-menggabungkan-collection.kt
+    ├── bab-11-destructuring.kt
+    ├── verifikasi.kt
     └── latihan/
-        └── latihan-akhir.kt                     # latihan akhir modul
+        └── latihan-akhir.kt
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-04-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-05-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
