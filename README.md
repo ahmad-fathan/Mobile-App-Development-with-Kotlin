@@ -11,6 +11,7 @@ Seluruh berkas di repositori ini adalah **Kotlin murni (`.kt`)** yang dapat diko
 | 02 | Kotlin Programming Essentials |
 | 03 | OOP in Kotlin & Null Safety |
 | 04 | Kotlin-Specific Features & Collections |
+| 05 | Functional & Idiomatic Kotlin |
 
 ## Struktur folder
 
@@ -43,7 +44,7 @@ Setiap folder modul dapat dijalankan sendiri, jadi nama berkas yang sama (`Main.
 │   ├── verifikasi.kt                            # pemeriksaan otomatis
 │   └── latihan/
 │       └── latihan-akhir.kt                     # latihan akhir modul
-└── modul-03-oop-dan-null-safety/
+├── modul-03-oop-dan-null-safety/
 │   ├── Main.kt                                  # titik masuk + menu contoh
 │   ├── bab-01-class-dan-object.kt
 │   ├── bab-02-constructor-getter-dan-setter.kt
@@ -55,25 +56,36 @@ Setiap folder modul dapat dijalankan sendiri, jadi nama berkas yang sama (`Main.
 │   ├── verifikasi.kt                            # pemeriksaan otomatis
 │   └── latihan/
 │       └── latihan-akhir.kt                     # latihan akhir modul
-└── modul-04-kotlin-specific-features-dan-collections/
-    ├── Main.kt
-    ├── bab-01-data-class.kt
-    ├── bab-02-enum-class.kt
-    ├── bab-03-object-dan-companion-object.kt
-    ├── bab-04-extension-function.kt
-    ├── bab-05-array.kt
-    ├── bab-06-collection-read-only-dan-mutable.kt
-    ├── bab-07-list-dan-mutablelist.kt
-    ├── bab-08-set-dan-mutableset.kt
-    ├── bab-09-map-dan-mutablemap.kt
-    ├── bab-10-memilih-dan-menggabungkan-collection.kt
-    ├── bab-11-destructuring.kt
-    ├── verifikasi.kt
+├── modul-04-kotlin-specific-features-dan-collections/
+│   ├── Main.kt
+│   ├── bab-01-data-class.kt
+│   ├── bab-02-enum-class.kt
+│   ├── bab-03-object-dan-companion-object.kt
+│   ├── bab-04-extension-function.kt
+│   ├── bab-05-array.kt
+│   ├── bab-06-collection-read-only-dan-mutable.kt
+│   ├── bab-07-list-dan-mutablelist.kt
+│   ├── bab-08-set-dan-mutableset.kt
+│   ├── bab-09-map-dan-mutablemap.kt
+│   ├── bab-10-memilih-dan-menggabungkan-collection.kt
+│   ├── bab-11-destructuring.kt
+│   ├── verifikasi.kt
+│   └── latihan/
+│       └── latihan-akhir.kt
+└── modul-05-functional-dan-idiomatic-kotlin/
+    ├── Main.kt                                  # titik masuk + menu contoh
+    ├── bab-01-fungsi-sebagai-nilai-lambda-dan-function-type.kt
+    ├── bab-02-higher-order-function.kt
+    ├── bab-03-mengolah-collection-dengan-operasi-fungsional.kt
+    ├── bab-04-menggabungkan-operasi-menjadi-pipeline.kt
+    ├── bab-05-scope-function.kt
+    ├── bab-06-generics-dasar.kt
+    ├── verifikasi.kt                            # pemeriksaan otomatis
     └── latihan/
-        └── latihan-akhir.kt
+        └── latihan-akhir.kt                     # latihan akhir modul
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-05-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-06-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
