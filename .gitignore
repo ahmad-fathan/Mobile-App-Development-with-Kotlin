@@ -1,5 +1,6 @@
 # Berkas hasil build dan konfigurasi lokal
 *.jar
+!**/gradle/wrapper/gradle-wrapper.jar
 .gradle/
 build/
 out/
