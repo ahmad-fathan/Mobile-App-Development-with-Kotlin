@@ -13,6 +13,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 04 | Kotlin-Specific Features & Collections | Kotlin konsol |
 | 05 | Functional & Idiomatic Kotlin | Kotlin konsol |
 | 06 | Android Studio and Your First Jetpack Compose App | Proyek Android Studio |
+| 07 | Jetpack Compose Basics | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -94,7 +95,26 @@ app/src/main/java/<paket>/
 │   ├── verifikasi.kt                            # pemeriksaan otomatis
 │   └── latihan/
 │       └── latihan-akhir.kt                     # latihan akhir modul
-└── modul-06-android-studio-dan-compose-pertama/ # proyek Android Studio
+├── modul-06-android-studio-dan-compose-pertama/ # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # versi plugin dan dependensi
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/myfirstcomposeapp/
+│           │   ├── MainActivity.kt              # titik masuk + setContent
+│           │   ├── bab/bab-01-composable-pertama.kt
+│           │   ├── bab/bab-02-column-dan-preview.kt
+│           │   ├── bab/bab-03-menampilkan-gambar.kt
+│           │   ├── bab/bab-04-warna-latar-dan-padding.kt
+│           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
+│           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
+│           └── res/                              # drawable, mipmap, values, xml
+└── modul-07-jetpack-compose-basics/             # proyek Android Studio
     ├── settings.gradle.kts
     ├── build.gradle.kts
     ├── gradle.properties
@@ -104,15 +124,21 @@ app/src/main/java/<paket>/
         ├── build.gradle.kts                     # konfigurasi modul app
         └── src/main/
             ├── AndroidManifest.xml
-            ├── java/com/example/myfirstcomposeapp/
-            │   ├── MainActivity.kt              # titik masuk + setContent
-            │   ├── bab/bab-01-composable-pertama.kt
-            │   ├── bab/bab-02-column-dan-preview.kt
-            │   ├── bab/bab-03-menampilkan-gambar.kt
-            │   ├── bab/bab-04-warna-latar-dan-padding.kt
+            ├── java/com/example/studentgreeting/
+            │   ├── MainActivity.kt              # Student Greeting App (Bagian 11)
+            │   ├── bab/bab-01-composable-dan-preview.kt
+            │   ├── bab/bab-02-mengatur-tampilan-teks.kt
+            │   ├── bab/bab-03-merangkai-modifier.kt
+            │   ├── bab/bab-04-column-dan-row.kt
+            │   ├── bab/bab-05-button-dan-event-handler.kt
+            │   ├── bab/bab-06-state-remember-dan-mutablestateof.kt
+            │   ├── bab/bab-07-menerima-input-dengan-textfield.kt
+            │   ├── bab/bab-08-menampilkan-gambar.kt
             │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
             │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
-            └── res/                              # drawable, mipmap, values, xml
+            └── res/
+                ├── drawable/                     # ikon template (vector)
+                └── drawable-nodpi/student.png    # gambar contoh 512×512
 ```
 
 Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-07-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
@@ -180,17 +206,19 @@ Opsi `-include-runtime` diperlukan agar berkas `.jar` dapat langsung dijalankan 
 
 Bukalah **folder modul**, bukan root repositori:
 
-1. **File → Open**, pilih `modul-06-android-studio-dan-compose-pertama`.
+1. **File → Open**, pilih folder modul, misalnya `modul-07-jetpack-compose-basics`.
 2. Tunggu **Gradle sync** selesai (unduhan pertama bisa beberapa menit).
 3. Pilih perangkat pada device selector, lalu klik **Run** (segitiga hijau).
 
 Dari terminal:
 
 ```bash
-cd modul-06-android-studio-dan-compose-pertama
+cd modul-07-jetpack-compose-basics
 ./gradlew assembleDebug          # hasil: app/build/outputs/apk/debug/app-debug.apk
 ./gradlew installDebug           # pasang ke emulator/perangkat yang aktif
 ```
+
+Dari root repositori, `./jalankan.sh 07` juga bekerja: modul yang punya `gradlew` otomatis dialihkan ke Gradle (`./jalankan.sh 07 verifikasi` menjalankan `assembleDebug`).
 
 Bila `local.properties` belum ada dan perintah Gradle dijalankan dari terminal (bukan dari Android Studio), tambahkan lokasi Android SDK:
 
@@ -218,6 +246,27 @@ export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
 | `Latihan2GambarSendiri()` | `latihan/latihan-akhir.kt` | Latihan 2 |
 
 Setiap composable juga punya fungsi `@Preview` dengan nama serupa, sehingga tampilannya dapat diperiksa di panel Design tanpa menjalankan aplikasi.
+
+#### Tampilan modul 07 — Student Greeting App
+
+`MainActivity` memasang `StudentGreetingScreen()` — kolom isian nama, tombol **Say Hello**, teks sapaan, dan gambar. Setelah aplikasi berjalan, ketik sebuah nama lalu tekan tombolnya; sapaan muncul di bawah tombol. Untuk mencoba contoh lain, ganti pemanggilan di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `StudentGreetingScreen()` | `MainActivity.kt` | 11 |
+| `WelcomeScreen()` | `bab/bab-01-composable-dan-preview.kt` | 3 |
+| `TeksBesarTebal()` | `bab/bab-02-mengatur-tampilan-teks.kt` | 4 |
+| `TeksSelebarLayar()` | `bab/bab-03-merangkai-modifier.kt` | 5 |
+| `ColumnDenganJarak()` | `bab/bab-04-column-dan-row.kt` | 6 |
+| `TombolSederhana()` | `bab/bab-05-button-dan-event-handler.kt` | 7 |
+| `CounterExample()` | `bab/bab-06-state-remember-dan-mutablestateof.kt` | 8 |
+| `NameInputDenganSapaan()` | `bab/bab-07-menerima-input-dengan-textfield.kt` | 9 |
+| `GambarBerkuranTetap()` | `bab/bab-08-menampilkan-gambar.kt` | 10 |
+| `Latihan1UbahTeks()` … `Latihan5KartuProfilMahasiswa()` | `latihan/latihan-akhir.kt` | Latihan 1–5 |
+
+Interaksi (klik dan ketikan) tidak terlihat di Preview biasa. Jalankan aplikasi di emulator, atau aktifkan **mode interaktif** pada panel Preview — letak tombolnya dapat berbeda antarversi Android Studio.
+
+Gambar contoh `res/drawable-nodpi/student.png` disertakan agar `R.drawable.student` langsung dikenali. Bila ingin memakai gambar sendiri, ganti berkas itu dengan nama yang hanya berisi huruf kecil, angka, dan garis bawah.
 
 ## Penggunaan
 
