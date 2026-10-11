@@ -14,6 +14,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 05 | Functional & Idiomatic Kotlin | Kotlin konsol |
 | 06 | Android Studio and Your First Jetpack Compose App | Proyek Android Studio |
 | 07 | Jetpack Compose Basics | Proyek Android Studio |
+| 08 | Compose Layouts and UI Components | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -114,7 +115,7 @@ app/src/main/java/<paket>/
 │           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
 │           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
 │           └── res/                              # drawable, mipmap, values, xml
-└── modul-07-jetpack-compose-basics/             # proyek Android Studio
+├── modul-07-jetpack-compose-basics/             # proyek Android Studio
     ├── settings.gradle.kts
     ├── build.gradle.kts
     ├── gradle.properties
@@ -139,9 +140,33 @@ app/src/main/java/<paket>/
             └── res/
                 ├── drawable/                     # ikon template (vector)
                 └── drawable-nodpi/student.png    # gambar contoh 512×512
+├── modul-08-compose-layouts-dan-komponen-ui/    # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # versi plugin dan dependensi
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/studentprofile/
+│           │   ├── MainActivity.kt              # Student Profile Screen (Bagian 9)
+│           │   ├── bab/bab-01-layar-sebagai-susunan-kontainer.kt
+│           │   ├── bab/bab-02-column-dan-row-lebih-dalam.kt
+│           │   ├── bab/bab-03-arrangement-dan-alignment.kt
+│           │   ├── bab/bab-04-box-menumpuk-dan-menempatkan-elemen.kt
+│           │   ├── bab/bab-05-modifier-ukuran-jarak-dan-tampilan.kt
+│           │   ├── bab/bab-06-komponen-material-3-dan-tema.kt
+│           │   ├── bab/bab-07-topappbar.kt
+│           │   ├── bab/bab-08-scaffold-struktur-sebuah-layar.kt
+│           │   ├── bab/bab-09-membangun-student-profile-screen.kt
+│           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
+│           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
+│           └── res/                              # mipmap, values, xml
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-07-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-09-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
@@ -206,19 +231,19 @@ Opsi `-include-runtime` diperlukan agar berkas `.jar` dapat langsung dijalankan 
 
 Bukalah **folder modul**, bukan root repositori:
 
-1. **File → Open**, pilih folder modul, misalnya `modul-07-jetpack-compose-basics`.
+1. **File → Open**, pilih folder modul, misalnya `modul-08-compose-layouts-dan-komponen-ui`.
 2. Tunggu **Gradle sync** selesai (unduhan pertama bisa beberapa menit).
 3. Pilih perangkat pada device selector, lalu klik **Run** (segitiga hijau).
 
 Dari terminal:
 
 ```bash
-cd modul-07-jetpack-compose-basics
+cd modul-08-compose-layouts-dan-komponen-ui
 ./gradlew assembleDebug          # hasil: app/build/outputs/apk/debug/app-debug.apk
 ./gradlew installDebug           # pasang ke emulator/perangkat yang aktif
 ```
 
-Dari root repositori, `./jalankan.sh 07` juga bekerja: modul yang punya `gradlew` otomatis dialihkan ke Gradle (`./jalankan.sh 07 verifikasi` menjalankan `assembleDebug`).
+Dari root repositori, `./jalankan.sh 08` juga bekerja: modul yang punya `gradlew` otomatis dialihkan ke Gradle (`./jalankan.sh 08 verifikasi` menjalankan `assembleDebug`).
 
 Bila `local.properties` belum ada dan perintah Gradle dijalankan dari terminal (bukan dari Android Studio), tambahkan lokasi Android SDK:
 
@@ -267,6 +292,30 @@ Setiap composable juga punya fungsi `@Preview` dengan nama serupa, sehingga tamp
 Interaksi (klik dan ketikan) tidak terlihat di Preview biasa. Jalankan aplikasi di emulator, atau aktifkan **mode interaktif** pada panel Preview — letak tombolnya dapat berbeda antarversi Android Studio.
 
 Gambar contoh `res/drawable-nodpi/student.png` disertakan agar `R.drawable.student` langsung dikenali. Bila ingin memakai gambar sendiri, ganti berkas itu dengan nama yang hanya berisi huruf kecil, angka, dan garis bawah.
+
+#### Tampilan modul 08 — Student Profile / Greeting Screen
+
+`MainActivity` memasang `StudentProfileApp()` — satu `Scaffold` dengan `TopAppBar` bertuliskan "Student Profile", kartu profil berisi avatar inisial dan label status, kolom nama, dua tombol sama lebar, dan teks sapaan. Untuk mencoba contoh lain, ganti pemanggilan di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `StudentProfileApp()` | `MainActivity.kt` | 9.7–9.8 |
+| `StudentProfileScreen()` | `MainActivity.kt` | 9.4–9.6 |
+| `ProfileCard()` / `ProfileAvatar()` | `MainActivity.kt` | 9.2–9.3 |
+| `ContohCardDenganRow()` | `bab/bab-01-layar-sebagai-susunan-kontainer.kt` | 2 |
+| `HeaderBersarang()`, `DuaTombolDenganWeight()` | `bab/bab-02-column-dan-row-lebih-dalam.kt` | 3 |
+| `ColumnArrangementCenter()`, `RowSpaceBetween()` | `bab/bab-03-arrangement-dan-alignment.kt` | 4 |
+| `AvatarDenganLabelStatus()`, `BoxSembilanPosisi()` | `bab/bab-04-box-menumpuk-dan-menempatkan-elemen.kt` | 5 |
+| `UrutanBackgroundLaluPadding()` / `UrutanPaddingLaluBackground()` | `bab/bab-05-modifier-ukuran-jarak-dan-tampilan.kt` | 6 |
+| `TeksDenganPeranTema()`, `ContohCardTema()` | `bab/bab-06-komponen-material-3-dan-tema.kt` | 7 |
+| `ProfileTopBar()` | `bab/bab-07-topappbar.kt` | 7.4 |
+| `ContohScaffold()` | `bab/bab-08-scaffold-struktur-sebuah-layar.kt` | 8 |
+| `Tahap1Header()` … `Tahap6CardBertema()` | `bab/bab-09-membangun-student-profile-screen.kt` | 9.1–9.6 |
+| `Latihan1aSpaceBetween()` … `Latihan5ProfilDiTengah()` | `latihan/latihan-akhir.kt` | Latihan 1–5 |
+
+Latihan 6 berupa daftar nilai warna/tipografi/jarak pada kode akhir; jawabannya ada di KDoc `latihan6RingkasanKonsistensi()`.
+
+Perilaku yang dapat diuji di emulator: ketik nama lalu **Show Greeting** menghasilkan `Hello, <nama>! Welcome to class.`; kolom kosong atau hanya berisi spasi menghasilkan `Hello, guest! Welcome to class.`; **Clear** mengosongkan kolom sekaligus sapaan.
 
 ## Penggunaan
 
