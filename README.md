@@ -15,6 +15,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 06 | Android Studio and Your First Jetpack Compose App | Proyek Android Studio |
 | 07 | Jetpack Compose Basics | Proyek Android Studio |
 | 08 | Compose Layouts and UI Components | Proyek Android Studio |
+| 09 | State Management and User Interaction | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -161,6 +162,32 @@ app/src/main/java/<paket>/
 │           │   ├── bab/bab-07-topappbar.kt
 │           │   ├── bab/bab-08-scaffold-struktur-sebuah-layar.kt
 │           │   ├── bab/bab-09-membangun-student-profile-screen.kt
+│           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
+│           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
+│           └── res/                              # mipmap, values, xml
+├── modul-09-state-management-dan-user-interaction/  # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # versi plugin dan dependensi
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/studentprofileeditor/
+│           │   ├── MainActivity.kt              # Student Profile Editor (Bagian 10.6)
+│           │   ├── verifikasi.kt                # pemeriksaan perilaku editor (T1–T6)
+│           │   ├── bab/bab-01-dari-layar-profil-ke-editor-profil.kt
+│           │   ├── bab/bab-02-state-dan-event.kt
+│           │   ├── bab/bab-03-umur-state-dengan-remember.kt
+│           │   ├── bab/bab-04-menyimpan-state-dengan-remembersaveable.kt
+│           │   ├── bab/bab-05-recomposition-lebih-dalam.kt
+│           │   ├── bab/bab-06-derived-state-dan-validasi.kt
+│           │   ├── bab/bab-07-menampilkan-ui-berdasarkan-state.kt
+│           │   ├── bab/bab-08-state-hoisting.kt
+│           │   ├── bab/bab-09-membangun-student-profile-editor.kt
+│           │   ├── bab/bab-10-mengatasi-masalah-umum.kt
 │           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
 │           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
 │           └── res/                              # mipmap, values, xml
@@ -316,6 +343,54 @@ Gambar contoh `res/drawable-nodpi/student.png` disertakan agar `R.drawable.stude
 Latihan 6 berupa daftar nilai warna/tipografi/jarak pada kode akhir; jawabannya ada di KDoc `latihan6RingkasanKonsistensi()`.
 
 Perilaku yang dapat diuji di emulator: ketik nama lalu **Show Greeting** menghasilkan `Hello, <nama>! Welcome to class.`; kolom kosong atau hanya berisi spasi menghasilkan `Hello, guest! Welcome to class.`; **Clear** mengosongkan kolom sekaligus sapaan.
+
+#### Tampilan modul 09 — Student Profile Editor
+
+`MainActivity` memasang `StudentProfileEditorApp()` — `Scaffold` yang sama dengan modul sebelumnya (TopAppBar "Student Profile", kartu profil, avatar), tetapi kontennya adalah editor bio: mode baca dengan tombol **Edit bio**, dan mode edit berisi field bio, penghitung `n/80 characters`, pesan kesalahan, serta tombol **Save** dan **Cancel**. Untuk mencoba contoh lain, ganti pemanggilan di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `StudentProfileEditor()` | `bab/bab-09-membangun-student-profile-editor.kt` | 10.1–10.5 |
+| `BioEditor()` / `BioReadOnly()` | `bab/bab-09-membangun-student-profile-editor.kt` | 10.3–10.5 |
+| `ContohSatuNilaiSatuAksi()` | `bab/bab-01-dari-layar-profil-ke-editor-profil.kt` | 2 |
+| `KetukanSaveAdalahEvent()` | `bab/bab-02-state-dan-event.kt` | 3 |
+| `BioDraftTest()` | `bab/bab-03-umur-state-dengan-remember.kt` | 4.1 |
+| `BioDraftSaveableTest()` | `bab/bab-04-menyimpan-state-dengan-remembersaveable.kt` | 5 |
+| `PelacakPembacaanState()` | `bab/bab-05-recomposition-lebih-dalam.kt` | 6 |
+| `PolaDerivedYangBenar()` / `PolaStateTerpisahYangSalah()` | `bab/bab-06-derived-state-dan-validasi.kt` | 7 |
+| `PercabanganIfBiarkanIndukMemegangState()` | `bab/bab-07-menampilkan-ui-berdasarkan-state.kt` | 8 |
+| `HoistEditorDemo()` / `HoistBioEditor()` | `bab/bab-08-state-hoisting.kt` | 9 |
+| `Latihan1NoteEditor()` … `Latihan5IndikatorPerubahan()` | `latihan/latihan-akhir.kt` | Latihan 1–5 |
+
+Perilaku yang dapat diuji di emulator: **Edit bio** membuka editor; **Save** hanya aktif bila teks setelah di-trim berisi 1–80 karakter (field berwarna merah dan pesannya muncul bila tidak valid); **Cancel** mengembalikan bio tersimpan; draf dan mode edit tetap utuh setelah rotasi; dan setelah Save, editor dibuka lagi dari bio tersimpan — bukan dari draf mentah (coba draf `"  Hi  "`).
+
+Latihan 1–3 dan 6 menguji pemahaman konsep; jawabannya ada pada KDoc masing-masing fungsi. Latihan 4 (editor nama panggilan) dapat dicoba dengan memanggil `Latihan4EditorNamaPanggilan(modifier = Modifier.padding(innerPadding))`; Latihan 6 menjalankan seluruh pemeriksaan otomatis dari dalam aplikasi lewat `jawabanLatihan6VerifikasiSemua()`.
+
+#### Menjalankan verifikasi perilaku modul 09 (tanpa emulator)
+
+Modul 09 menilai editor dari perilakunya. Karena itu modul ini menyertakan `verifikasi.kt` — model transisi editor (Edit, Type, Save, Cancel) sebagai fungsi murni tanpa Compose — sehingga keenam kasus uji Tabel 5 dapat diperiksa hanya dengan Kotlin compiler:
+
+```bash
+# dari root repositori
+./jalankan.sh 09 perilaku
+
+# atau langsung
+cd modul-09-state-management-dan-user-interaction
+kotlinc app/src/main/java/com/example/studentprofileeditor/verifikasi.kt -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 17/17 lulus`. Pemeriksaan yang sama juga dibungkus oleh `jawabanLatihan6VerifikasiSemua()`, yang mencetak tabel urutan event Latihan 6 dan menjalankan keenam kasus uji nama panggilan Latihan 4.
+
+Untuk menguji keenam kasus Tabel 5 **pada perangkat sungguhan**, modul ini menyertakan skrip ADB yang menggerakkan emulator lewat `uiautomator` dan mencetak teks yang benar-benar terlihat:
+
+```bash
+export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+cd modul-09-state-management-dan-user-interaction
+python3 probe-modul09.py        # 20/20 lulus pada Medium_Phone_API_36.0
+```
+
+Skrip itu menulis tangkapan layar tiap langkah ke `/tmp/m09-*.png` (mode baca, draf kosong, draf 81 karakter, setelah rotasi, dan seterusnya) sehingga hasil pengujian dapat dipakai sebagai bukti pada lembar kerja Latihan 6.
 
 ## Penggunaan
 

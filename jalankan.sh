@@ -6,6 +6,7 @@
 #   ./jalankan.sh 03 verifikasi  # pemeriksaan otomatis modul 03
 #   ./jalankan.sh 06           # build APK modul Android (modul 06 ke atas)
 #   ./jalankan.sh 06 installDebug  # pasang APK ke emulator/perangkat
+#   ./jalankan.sh 09 perilaku     # periksa perilaku tanpa emulator (verifikasi.kt)
 #
 # Modul konsol (02–05) memakai Kotlin compiler bawaan Android Studio bila ada,
 # sehingga tidak perlu memasang kotlinc terpisah. Modul Android (punya gradlew)
@@ -40,6 +41,26 @@ if [ -x "$FOLDER/gradlew" ]; then
     cd "$FOLDER"
     if [ "$PERINTAH" = "verifikasi" ]; then
         ./gradlew assembleDebug
+    elif [ "$PERINTAH" = "perilaku" ]; then
+        # Modul Android yang menyertakan verifikasi.kt (Kotlin stdlib saja) dapat
+        # diperiksa tanpa Gradle dan tanpa emulator: kompilasi berkas itu sendiri.
+        KOTLINC_AS="/Applications/Android Studio.app/Contents/plugins/Kotlin/kotlinc/bin/kotlinc"
+        JBR_AS="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+        if [ -x "$KOTLINC_AS" ]; then
+            KOTLINC="$KOTLINC_AS"
+            export JAVA_HOME="${JAVA_HOME:-$JBR_AS}"
+        else
+            KOTLINC="$(command -v kotlinc)"
+        fi
+        SUMBER="app/src/main/java"
+        VERIFIKASI="$(find "$SUMBER" -name 'verifikasi.kt' | head -1)"
+        if [ -z "$VERIFIKASI" ]; then
+            echo "Modul ini tidak menyertakan verifikasi.kt."
+            exit 1
+        fi
+        rm -rf build/verifikasi && mkdir -p build/verifikasi
+        "$KOTLINC" "$VERIFIKASI" -include-runtime -d build/verifikasi/verifikasi.jar
+        java -jar build/verifikasi/verifikasi.jar
     elif [ -n "$PERINTAH" ]; then
         ./gradlew "$PERINTAH"
     else
