@@ -198,7 +198,6 @@ app/src/main/java/<paket>/
 │   ├── gradle.properties
 │   ├── gradle/libs.versions.toml                # versi plugin dan dependensi
 │   ├── gradlew, gradlew.bat, gradle/wrapper/
-│   ├── probe-modul10.py                         # pengujian Tabel 5 lewat adb/uiautomator
 │   └── app/
 │       ├── build.gradle.kts                     # konfigurasi modul app
 │       └── src/main/
@@ -462,12 +461,11 @@ java -jar verifikasi.jar
 
 Keluaran yang diharapkan: `Kasus uji: 36/36 lulus`, didahului perhitungan kolom grid (360 dp → 1 kolom, 412 dp → 2 kolom, 840 dp → 4 kolom pada minSize 160 dp). Pemeriksaan yang sama juga dibungkus oleh `latihan6JalankanSemua()`, yang mencetak jawaban Latihan 1 dan Latihan 3.
 
-Untuk menguji ketujuh kasus Tabel 5 **pada perangkat sungguhan**, modul ini menyertakan skrip ADB:
+Untuk menguji ketujuh kasus Tabel 5 **pada perangkat sungguhan**, ada skrip ADB terpisah di luar repo: `~/Documents/SOURCE CODE/_alat-uji/probe-modul10.py`.
 
 ```bash
 export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
-cd modul-10-lists-grids-dan-material-design-3
-python3 probe-modul10.py        # T1–T7 lulus pada Medium_Phone_API_36.0
+python3 "$HOME/Documents/SOURCE CODE/_alat-uji/probe-modul10.py"   # T1–T7 lulus pada Medium_Phone_API_36.0
 ```
 
 Skrip itu menulis tangkapan layar tiap langkah ke `/tmp/m10-*.png` (daftar, kartu terakhir, mode grid, label status, dan tema gelap).
