@@ -16,6 +16,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 07 | Jetpack Compose Basics | Proyek Android Studio |
 | 08 | Compose Layouts and UI Components | Proyek Android Studio |
 | 09 | State Management and User Interaction | Proyek Android Studio |
+| 10 | Lists, Grids, and Material Design 3 | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -188,12 +189,43 @@ app/src/main/java/<paket>/
 │           │   ├── bab/bab-08-state-hoisting.kt
 │           │   ├── bab/bab-09-membangun-student-profile-editor.kt
 │           │   ├── bab/bab-10-mengatasi-masalah-umum.kt
+│           ├── latihan/latihan-akhir.kt      # latihan akhir modul
+│           └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
+│       └── res/                              # mipmap, values, xml
+├── modul-10-lists-grids-dan-material-design-3/      # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # versi plugin dan dependensi
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   ├── probe-modul10.py                         # pengujian Tabel 5 lewat adb/uiautomator
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/studenttaskcatalog/
+│           │   ├── MainActivity.kt              # Student Task Catalog (Bagian 12.2)
+│           │   ├── StudentTask.kt               # data class + 12 data contoh + kategori
+│           │   ├── verifikasi.kt                # pemeriksaan aturan katalog (T1–T7)
+│           │   ├── bab/bab-01-dari-kumpulan-data-ke-item-tampilan.kt
+│           │   ├── bab/bab-02-mengapa-lazy-layout.kt
+│           │   ├── bab/bab-03-mengenal-lazycolumn.kt
+│           │   ├── bab/bab-04-item-composable-yang-dapat-dipakai-ulang.kt
+│           │   ├── bab/bab-05-key-yang-stabil.kt
+│           │   ├── bab/bab-06-lazyrow-untuk-kumpulan-horizontal.kt
+│           │   ├── bab/bab-07-lazyverticalgrid.kt
+│           │   ├── bab/bab-08-merancang-kartu-untuk-list-dan-grid.kt
+│           │   ├── bab/bab-09-menerapkan-peran-tema-material-3.kt
+│           │   ├── bab/bab-10-beralih-antara-list-dan-grid.kt
+│           │   ├── bab/bab-11-menyusun-layar-katalog-lengkap.kt
+│           │   ├── bab/bab-12-pengayaan-filter-kategori-dan-empty-state.kt
+│           │   ├── bab/bab-13-menguji-layar-dan-masalah-umum.kt
 │           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
 │           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
 │           └── res/                              # mipmap, values, xml
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-09-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-11-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
@@ -391,6 +423,55 @@ python3 probe-modul09.py        # 20/20 lulus pada Medium_Phone_API_36.0
 ```
 
 Skrip itu menulis tangkapan layar tiap langkah ke `/tmp/m09-*.png` (mode baca, draf kosong, draf 81 karakter, setelah rotasi, dan seterusnya) sehingga hasil pengujian dapat dipakai sebagai bukti pada lembar kerja Latihan 6.
+
+#### Tampilan modul 10 — Student Task Catalog
+
+`MainActivity` memasang `StudentTaskCatalogApp()` — `Scaffold` dengan TopAppBar "Student Tasks" berisi layar katalog: strip kategori (`LazyRow` berisi `SuggestionChip`), baris `12 tasks` + tombol **Show grid**, lalu satu lazy layout vertikal yang berganti antara `TaskList` (`LazyColumn`) dan `TaskGrid` (`LazyVerticalGrid` adaptif). Untuk mencoba contoh lain, ganti pemanggilan di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `StudentTaskCatalogScreen()` | `bab/bab-11-menyusun-layar-katalog-lengkap.kt` | 12.2 |
+| `TaskCard()` / `StatusLabel()` | `bab/bab-04-...`, `bab/bab-09-...` | 5, 10.1 |
+| `TaskList()` | `bab/bab-04-item-composable-yang-dapat-dipakai-ulang.kt` | 5.1 |
+| `CategoryStrip()` | `bab/bab-06-lazyrow-untuk-kumpulan-horizontal.kt` | 7 |
+| `TaskGrid()` / `ContohGridDuaKolom()` | `bab/bab-07-lazyverticalgrid.kt` | 8 |
+| `TaskViewToggle()` / `ContohBeralihListDanGrid()` | `bab/bab-10-beralih-antara-list-dan-grid.kt` | 11 |
+| `StudentTaskCatalogFilterScreen()` / `EmptyTaskState()` | `bab/bab-12-pengayaan-filter-kategori-dan-empty-state.kt` | 12.4–12.5 |
+| `ContohKumpulanDataKeItem()` | `bab/bab-01-dari-kumpulan-data-ke-item-tampilan.kt` | 2 |
+| `ContohColumnSeluruhDaftar()` / `ContohLazyColumn()` | `bab/bab-02-mengapa-lazy-layout.kt` | 3 |
+| `TaskTitleList()` / `ContohLazyColumnJudulBagian()` | `bab/bab-03-mengenal-lazycolumn.kt` | 4 |
+| `DaftarDenganKey()` / `DaftarTanpaKey()` | `bab/bab-05-key-yang-stabil.kt` | 6 |
+| `ContohKartuMetadataMendatar()` / `ContohKartuMetadataVertikal()` | `bab/bab-08-merancang-kartu-untuk-list-dan-grid.kt` | 9 |
+| `Latihan1RingkasanJawaban()` … `latihan6JalankanSemua()` | `latihan/latihan-akhir.kt` | Latihan 1–6 |
+
+Perilaku yang dapat diuji di emulator (Tabel 5 modul): 12 tugas semuanya tercapai dengan menggulir; kartu terakhir tidak terpotong tepi layar; keempat chip kategori tampil; tombol **Show grid** menukar daftar dan grid dari data yang sama; grid tampil dua kolom pada layar 1080 px; label `Completed`/`Pending` terbaca; dan daftar tetap tampil pada tema gelap.
+
+#### Menjalankan verifikasi aturan modul 10 (tanpa emulator)
+
+Modul 10 menilai layar dari aturan yang melandasinya. `verifikasi.kt` memuat aturan itu sebagai fungsi murni tanpa Compose — perhitungan kolom Adaptive, keunikan key, pasangan warna tema, dan penyaringan kategori:
+
+```bash
+# dari root repositori
+./jalankan.sh 10 perilaku
+
+# atau langsung
+cd modul-10-lists-grids-dan-material-design-3
+kotlinc app/src/main/java/com/example/studenttaskcatalog/verifikasi.kt -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 36/36 lulus`, didahului perhitungan kolom grid (360 dp → 1 kolom, 412 dp → 2 kolom, 840 dp → 4 kolom pada minSize 160 dp). Pemeriksaan yang sama juga dibungkus oleh `latihan6JalankanSemua()`, yang mencetak jawaban Latihan 1 dan Latihan 3.
+
+Untuk menguji ketujuh kasus Tabel 5 **pada perangkat sungguhan**, modul ini menyertakan skrip ADB:
+
+```bash
+export PATH="$HOME/Library/Android/sdk/platform-tools:$PATH"
+cd modul-10-lists-grids-dan-material-design-3
+python3 probe-modul10.py        # T1–T7 lulus pada Medium_Phone_API_36.0
+```
+
+Skrip itu menulis tangkapan layar tiap langkah ke `/tmp/m10-*.png` (daftar, kartu terakhir, mode grid, label status, dan tema gelap).
+
 
 ## Penggunaan
 
