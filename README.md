@@ -17,6 +17,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 08 | Compose Layouts and UI Components | Proyek Android Studio |
 | 09 | State Management and User Interaction | Proyek Android Studio |
 | 10 | Lists, Grids, and Material Design 3 | Proyek Android Studio |
+| 11 | UI/UX and Adaptive Layout | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -221,7 +222,34 @@ app/src/main/java/<paket>/
 │           │   ├── bab/bab-13-menguji-layar-dan-masalah-umum.kt
 │           │   ├── latihan/latihan-akhir.kt      # latihan akhir modul
 │           │   └── ui/theme/                     # Color.kt, Theme.kt, Type.kt
-│           └── res/                              # mipmap, values, xml
+│           └── res/                              # mipmap, values, xml├── modul-11-uiux-dan-adaptive-layout/           # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # + androidx.compose.material3.adaptive:1.3.0
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/campuscoursebrowser/
+│           │   ├── MainActivity.kt              # akar aplikasi: baca ukuran jendela (Bagian 9.2, 10.2)
+│           │   ├── Course.kt                    # data class Course + data contoh + teks UI
+│           │   ├── verifikasi.kt                # aturan desain & layout adaptif (57 pemeriksaan)
+│           │   ├── bab/bab-01-ui-dan-ux.kt      # satu bagian modul = satu berkas
+│           │   ├── bab/bab-02-pengguna-tugas-dan-konteks.kt
+│           │   ├── bab/bab-03-dari-kebutuhan-ke-requirement.kt
+│           │   ├── bab/bab-04-membuat-sketsa-alur-tugas.kt
+│           │   ├── bab/bab-05-prinsip-desain-antarmuka.kt
+│           │   ├── bab/bab-06-aksesibilitas-dasar.kt
+│           │   ├── bab/bab-07-layout-responsive-dan-adaptive.kt
+│           │   ├── bab/bab-08-mewujudkan-keputusan-desain-di-compose.kt
+│           │   ├── bab/bab-09-membangun-campus-course-browser.kt
+│           │   ├── bab/bab-10-menguji-desain.kt
+│           │   ├── bab/bab-11-mengatasi-masalah-umum.kt
+│           │   ├── latihan/latihan-akhir.kt     # proyek Katalog Kampus Adaptif (5 langkah)
+│           │   └── ui/theme/                    # Color.kt, Theme.kt, Type.kt
+│           └── res/                             # mipmap, values, xml
 ```
 
 Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-11-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
@@ -469,6 +497,46 @@ python3 "$HOME/Documents/SOURCE CODE/_alat-uji/probe-modul10.py"   # T1–T7 lul
 ```
 
 Skrip itu menulis tangkapan layar tiap langkah ke `/tmp/m10-*.png` (daftar, kartu terakhir, mode grid, label status, dan tema gelap).
+
+
+#### Tampilan modul 11 — Campus Course Browser
+
+`MainActivity` memasang `CourseBrowserApp()`, yang membaca ukuran jendela sekali di akar aplikasi lalu memanggil `CourseBrowser(showTwoPanes = ...)`. Satu panel pada jendela sempit, dua panel pada lebar ≥ 840 dp **dan** tinggi ≥ 480 dp. Untuk mencoba contoh lain, ganti pemanggilan `CourseBrowserApp()` di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `CourseBrowserApp()` | `MainActivity.kt` | 9.2, 10.2 |
+| `CourseBrowser(showTwoPanes)` | `bab/bab-09-membangun-campus-course-browser.kt` | 10.3–10.5 |
+| `KartuUserStory()` | `bab/bab-02-pengguna-tugas-dan-konteks.kt` | 3 |
+| `TabelRequirement()` | `bab/bab-03-dari-kebutuhan-ke-requirement.kt` | 4 |
+| `SketsaWireframeSempit()` / `SketsaWireframeLebar()` | `bab/bab-04-membuat-sketsa-alur-tugas.kt` | 5 |
+| `KartuTanpaHierarki()` / `KartuDenganHierarki()` | `bab/bab-05-prinsip-desain-antarmuka.kt` | 6.1–6.2 |
+| `RingkasanAksesibilitas()` / `TombolFavoritDenganTarget48()` | `bab/bab-06-aksesibilitas-dasar.kt` | 7.1–7.4 |
+| `TabelKebijakanLayout()` | `bab/bab-07-layout-responsive-dan-adaptive.kt` | 8.3–8.5 |
+| `GridCourseAdaptif()` / `ContohStateDiAtasCabangLayout()` | `bab/bab-08-mewujudkan-keputusan-desain-di-compose.kt` | 9.5, 9.3 |
+| `TabelMatriksUji()` | `bab/bab-10-menguji-desain.kt` | 11.2, 11.4 |
+| `TabelMasalahUmum()` | `bab/bab-11-mengatasi-masalah-umum.kt` | 12 |
+| `KatalogAdaptifApp()` | `latihan/latihan-akhir.kt` | Latihan |
+
+Tiga preview disertakan untuk kebijakan layout yang berbeda: `CompactPreview` (360 × 800 dp), `WidePreview` (1000 × 800 dp), dan `LargeTextPreview` (fontScale 1.5f). Preview menyuntikkan kebijakan secara langsung, jadi ia **tidak** membuktikan perhitungan window size class — perilaku itu diuji di emulator.
+
+Perilaku yang dapat diuji di emulator: daftar tampil sendiri pada jendela sempit; memilih mata kuliah membuka detail dengan tombol **Back to courses**; memperlebar jendela menampilkan daftar dan panel detail bersamaan; dan mata kuliah yang sedang dibuka **tetap terpilih** setelah jendela berubah ukuran.
+
+#### Menjalankan verifikasi aturan modul 11 (tanpa emulator)
+
+`verifikasi.kt` memuat aturan desain dan layout adaptif sebagai fungsi murni tanpa Compose — rasio kontras WCAG, target sentuh 48 dp, penanda pilihan yang bukan hanya warna, kelas lebar jendela, kebijakan dua panel, matriks uji, dan Tabel 12:
+
+```bash
+# dari root repositori
+./jalankan.sh 11 perilaku
+
+# atau langsung
+cd modul-11-uiux-dan-adaptive-layout
+kotlinc app/src/main/java/com/example/campuscoursebrowser/verifikasi.kt -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 57/57 lulus`, didahului tabel kebijakan layout untuk lima ukuran jendela (360 × 800 → satu panel, 1000 × 800 → dua panel, 900 × 400 → satu panel).
 
 
 ## Penggunaan

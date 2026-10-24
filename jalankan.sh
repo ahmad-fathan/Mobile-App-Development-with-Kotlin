@@ -8,6 +8,7 @@
 #   ./jalankan.sh 06 installDebug  # pasang APK ke emulator/perangkat
 #   ./jalankan.sh 09 perilaku     # periksa perilaku tanpa emulator (verifikasi.kt)
 #   ./jalankan.sh 10 perilaku     # periksa aturan list/grid modul 10 tanpa emulator
+#   ./jalankan.sh 11 perilaku     # periksa aturan desain + layout adaptif modul 11
 #
 # Modul konsol (02–05) memakai Kotlin compiler bawaan Android Studio bila ada,
 # sehingga tidak perlu memasang kotlinc terpisah. Modul Android (punya gradlew)
