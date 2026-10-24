@@ -600,7 +600,11 @@ Layar bab menampilkan tabel modul (Tabel 1–9) dan potongan kode; yang benar-be
 
 # atau langsung (berkas data layer wajib ikut dikompilasi)
 cd modul-12-mvvm-dan-viewmodel-jetpack-compose
-kotlinc app/src/main/java/com/example/studytasks/{verifikasi,StudyTask,TaskRepository,InMemoryTaskRepository,TasksUiState}.kt \
+kotlinc app/src/main/java/com/example/studytasks/verifikasi.kt \
+    app/src/main/java/com/example/studytasks/StudyTask.kt \
+    app/src/main/java/com/example/studytasks/TaskRepository.kt \
+    app/src/main/java/com/example/studytasks/InMemoryTaskRepository.kt \
+    app/src/main/java/com/example/studytasks/TasksUiState.kt \
     -include-runtime -d verifikasi.jar
 java -jar verifikasi.jar
 ```

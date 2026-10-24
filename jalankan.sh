@@ -62,7 +62,15 @@ if [ -x "$FOLDER/gradlew" ]; then
             exit 1
         fi
         rm -rf build/verifikasi && mkdir -p build/verifikasi
-        "$KOTLINC" "$VERIFIKASI" -include-runtime -d build/verifikasi/verifikasi.jar
+        # verifikasi.kt hanya memakai Kotlin stdlib, tetapi ia MEMAKAI model data layer di paket
+        # akar (StudyTask, TasksUiState, repository). Ikutkan berkas pakar akar yang tidak
+        # mengimpor AndroidX, supaya aturan yang diuji adalah kode yang benar-benar dipakai app.
+        BERKAS=("$VERIFIKASI")
+        while IFS= read -r berkas; do
+            [ "$berkas" = "$VERIFIKASI" ] && continue
+            grep -q "^import androidx" "$berkas" || BERKAS+=("$berkas")
+        done < <(find "$(dirname "$VERIFIKASI")" -maxdepth 1 -name '*.kt')
+        "$KOTLINC" "${BERKAS[@]}" -include-runtime -d build/verifikasi/verifikasi.jar
         java -jar build/verifikasi/verifikasi.jar
     elif [ -n "$PERINTAH" ]; then
         ./gradlew "$PERINTAH"
