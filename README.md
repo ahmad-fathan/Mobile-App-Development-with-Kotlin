@@ -18,6 +18,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 09 | State Management and User Interaction | Proyek Android Studio |
 | 10 | Lists, Grids, and Material Design 3 | Proyek Android Studio |
 | 11 | UI/UX and Adaptive Layout | Proyek Android Studio |
+| 12 | MVVM and ViewModel in Jetpack Compose | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -250,9 +251,36 @@ app/src/main/java/<paket>/
 │           │   ├── latihan/latihan-akhir.kt     # proyek Katalog Kampus Adaptif (5 langkah)
 │           │   └── ui/theme/                    # Color.kt, Theme.kt, Type.kt
 │           └── res/                             # mipmap, values, xml
+├── modul-12-mvvm-dan-viewmodel-jetpack-compose/ # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # + lifecycle-viewmodel-compose, lifecycle-runtime-compose
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts                     # konfigurasi modul app
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/studytasks/
+│           │   ├── MainActivity.kt              # Scaffold + TasksRoute (Bagian 7.13)
+│           │   ├── StudyTask.kt                 # data class (Bagian 7.1)
+│           │   ├── TaskRepository.kt            # interface data layer (Bagian 7.2)
+│           │   ├── InMemoryTaskRepository.kt    # implementasi di memori (Bagian 7.3)
+│           │   ├── TasksUiState.kt              # UI state (Bagian 7.4)
+│           │   ├── TasksViewModel.kt            # StateFlow + aksi + Factory (Bagian 7.6–7.9)
+│           │   ├── TasksRoute.kt                # viewModel() + collectAsStateWithLifecycle() (7.10)
+│           │   ├── TasksScreen.kt               # layar stateless (7.11)
+│           │   ├── TasksList.kt                 # LazyColumn key = id + Checkbox (7.12)
+│           │   ├── TasksPreview.kt              # tiga preview tanpa ViewModel (Bagian 9)
+│           │   ├── TampilanBersama.kt           # JudulBab / KodeBlok / Tabel
+│           │   ├── verifikasi.kt                # aturan data layer + Tabel 2–9 (76 cek)
+│           │   ├── bab/bab-01-pendahuluan.kt … bab-11-menguji-dan-kesalahan-umum.kt
+│           │   ├── latihan/latihan-akhir.kt     # Latihan 1–6 (3 & 4 diimplementasikan)
+│           │   └── ui/theme/                    # Color.kt, Theme.kt, Type.kt
+│           └── res/                             # mipmap, values, xml
 ```
 
-Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-11-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
+Modul berikutnya cukup ditambah sebagai folder sejajar, misalnya `modul-13-.../`, tanpa mengubah apa pun yang lain. Nama bab dibuat sepanjang judulnya supaya isi berkas bisa ditebak dari nama berkas saja.
 
 ## Menjalankan
 
@@ -537,6 +565,47 @@ java -jar verifikasi.jar
 ```
 
 Keluaran yang diharapkan: `Kasus uji: 57/57 lulus`, didahului tabel kebijakan layout untuk lima ukuran jendela (360 × 800 → satu panel, 1000 × 800 → dua panel, 900 × 400 → satu panel).
+
+#### Tampilan modul 12 — Study Tasks (MVVM dan ViewModel)
+
+`MainActivity` memasang `TasksRoute()`, yang memperoleh `TasksViewModel` dari provider lifecycle-aware lalu meneruskan state dan callback ke `TasksScreen`. Ketik judul, tekan **Add task**, centang untuk menandai selesai; judul kosong ditolak dengan pesan. Untuk mencoba contoh lain, ganti pemanggilan `TasksRoute()` di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `TasksRoute()` | `TasksRoute.kt` | 7.10 |
+| `TasksScreen(uiState, …)` | `TasksScreen.kt` | 7.11 |
+| `TasksList(tasks, onToggleTask)` | `TasksList.kt` | 7.12 |
+| `TasksScreenPreview()` / `TasksScreenErrorPreview()` / `TasksScreenEmptyPreview()` | `TasksPreview.kt` | 9 |
+| `TaskScreenBefore()` / `PraktikTaskScreenBefore()` | `bab/bab-02-satu-composable-mengerjakan-semua.kt` | 2 |
+| `SeparationOfConcernsScreen()` | `bab/bab-03-separation-of-concerns-dan-lapisan.kt` | 3 |
+| `PolaMvvmScreen()` | `bab/bab-04-pola-mvvm.kt` | 4 |
+| `ViewModelDanLifecycleScreen()` | `bab/bab-05-viewmodel-dan-lifecycle.kt` | 5 |
+| `TempatMenyimpanStateScreen()` | `bab/bab-06-tempat-menyimpan-state.kt` | 6 |
+| `ModelDanRepositoryScreen()` | `bab/bab-07-model-dan-repository.kt` | 7.1–7.3 |
+| `UiStateDanViewModelScreen()` | `bab/bab-08-uistate-dan-viewmodel.kt` | 7.4–7.9, 8 |
+| `RouteScreenDanListScreen()` / `PraktikTasksScreenTanpaViewModel()` | `bab/bab-09-route-screen-dan-list.kt` | 7.10–7.13, 9, 10 |
+| `LangkahSelanjutnyaScreen()` | `bab/bab-10-langkah-selanjutnya.kt` | 11 |
+| `MengujiDanKesalahanUmumScreen()` | `bab/bab-11-menguji-dan-kesalahan-umum.kt` | 12–13 |
+| `LatihanTasksRoute()` / `LatihanTasksScreen(uiState, …)` | `latihan/latihan-akhir.kt` | Latihan 1–6 |
+
+Layar bab menampilkan tabel modul (Tabel 1–9) dan potongan kode; yang benar-benar berjalan adalah paket akar (`TasksViewModel`, repository, route) dan `LatihanTasksRoute()`. Tiga perilaku yang membedakan modul ini dari modul 09 dan dibuktikan di emulator: **rotasi mempertahankan draf dan daftar** karena ViewModel dipertahankan, **Back lalu buka lagi mengosongkan daftar** karena data hanya di memori, dan **judul sama dua kali menghasilkan dua baris** karena repository memberi ID berbeda.
+
+#### Menjalankan verifikasi aturan modul 12 (tanpa emulator)
+
+`verifikasi.kt` menguji aturan data layer sungguhan (repository, `copy()`, ID stabil) sekaligus isi Tabel 2–9 modul:
+
+```bash
+# dari root repositori
+./jalankan.sh 12 perilaku
+
+# atau langsung (berkas data layer wajib ikut dikompilasi)
+cd modul-12-mvvm-dan-viewmodel-jetpack-compose
+kotlinc app/src/main/java/com/example/studytasks/{verifikasi,StudyTask,TaskRepository,InMemoryTaskRepository,TasksUiState}.kt \
+    -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 76/76 lulus`, didahului matriks ketahanan nilai state (Tabel 7) untuk tiga peristiwa.
 
 
 ## Penggunaan
