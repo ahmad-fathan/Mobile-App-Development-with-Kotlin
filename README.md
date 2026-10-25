@@ -19,6 +19,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 10 | Lists, Grids, and Material Design 3 | Proyek Android Studio |
 | 11 | UI/UX and Adaptive Layout | Proyek Android Studio |
 | 12 | MVVM and ViewModel in Jetpack Compose | Proyek Android Studio |
+| 13 | UI State, StateFlow, and Unidirectional Data Flow | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -611,6 +612,71 @@ java -jar verifikasi.jar
 
 Keluaran yang diharapkan: `Kasus uji: 76/76 lulus`, didahului matriks ketahanan nilai state (Tabel 7) untuk tiga peristiwa.
 
+
+#### Tampilan modul 13 — Study Tasks (UI state, StateFlow, UDF)
+
+`MainActivity` memasang `TasksRoute()`, yang mengumpulkan `StateFlow` lewat
+`collectAsStateWithLifecycle()` lalu meneruskan **nilai + callback** ke `TasksScreen`. Tidak ada
+`remember` untuk draf dan tidak ada aturan validasi di layar. Untuk mencoba layar bab, ganti
+`TasksRoute()` di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `TasksRoute()` / `TasksScreen(uiState, …)` / `TasksList(uiState, …)` | `TasksScreen.kt` | StateFlow → route → layar |
+| `UiStateScreen()` | `bab/bab-01-ui-state-model-dan-derived-state.kt` | Awal modul (conflicting values, state vs event, derived state, `copy()`) |
+| `StateFlowScreen()` | `bab/bab-02-stateflow-dan-koleksi-lifecycle.kt` | StateFlow, `update()`, koleksi sadar-lifecycle |
+| `UdFlowScreen()` | `bab/bab-03-unidirectional-data-flow.kt` | UDF, MVVM, render, stable identity, trace interaksi |
+| `KehidupanStateScreen()` | `bab/bab-04-umur-state-dan-batas-stateflow.kt` | Recomposition/rotasi/process death, StateFlow bukan antrean |
+| `KesalahanUmumScreen()` | `bab/bab-05-kesalahan-umum-dan-praktik.kt` | Kesalahan umum, setup, praktik, pemahaman |
+| `LatihanScreen()` | `latihan/latihan-akhir.kt` | Delete a Task + Clear completed |
+
+Tiga perilaku yang membedakan modul ini dan dibuktikan di emulator: **ringkasan tetap menghitung
+daftar lengkap saat filter aktif** (derived state, bukan nilai tersimpan), **input dikosongkan oleh
+state** (layar tidak menyimpan draf kedua), dan **mengetik menghapus pesan validasi** karena
+`inputError` adalah state, bukan event sekali jalan.
+
+#### Menjalankan verifikasi aturan modul 13 (tanpa emulator)
+
+```bash
+# dari root repositori
+./jalankan.sh 13 perilaku
+
+# atau langsung
+cd modul-13-ui-state-stateflow-dan-unidirectional-data-flow
+kotlinc app/src/main/java/com/example/tasks/verifikasi.kt \
+    app/src/main/java/com/example/tasks/Task.kt \
+    app/src/main/java/com/example/tasks/TasksUiState.kt \
+    -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 64/64 lulus`.
+
+├── modul-13-ui-state-stateflow-dan-unidirectional-data-flow/ # proyek Android Studio
+│   ├── settings.gradle.kts
+│   ├── build.gradle.kts
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # lifecycle-viewmodel-compose, lifecycle-runtime-compose
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/tasks/
+│           │   ├── MainActivity.kt              # Scaffold + TasksRoute()
+│           │   ├── Task.kt                      # model tugas + idTugasBaru()
+│           │   ├── TasksUiState.kt              # snapshot layar + derived state
+│           │   ├── TasksViewModel.kt            # MutableStateFlow privat + StateFlow read-only
+│           │   ├── TasksScreen.kt               # route, layar stateless, list, preview
+│           │   ├── verifikasi.kt                # aturan state/UDF + tabel modul (64 pemeriksaan)
+│           │   ├── bab/bab-01-ui-state-model-dan-derived-state.kt
+│           │   ├── bab/bab-02-stateflow-dan-koleksi-lifecycle.kt
+│           │   ├── bab/bab-03-unidirectional-data-flow.kt
+│           │   ├── bab/bab-04-umur-state-dan-batas-stateflow.kt
+│           │   ├── bab/bab-05-kesalahan-umum-dan-praktik.kt
+│           │   ├── latihan/latihan-akhir.kt
+│           │   └── ui/theme/
+│           └── res/
 
 ## Penggunaan
 
