@@ -1,0 +1,101 @@
+package com.example.tasknav
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.heading
+import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+
+/**
+ * Komponen tampilan bersama untuk seluruh berkas bab.
+ *
+ * Dideklarasikan SEKALI di paket akar; menyalinnya ke setiap bab akan memicu
+ * `Conflicting declarations` saat folder dikompilasi sekaligus.
+ */
+
+/** Judul sebuah bagian modul, dipakai sebagai kepala setiap layar bab. */
+@Composable
+fun JudulBab(teks: String, keterangan: String? = null) {
+    Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            text = teks,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.semantics { heading() }
+        )
+        if (keterangan != null) {
+            Text(
+                text = keterangan,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
+    }
+}
+
+/** Potongan kode yang ditampilkan di layar; dapat digulir horizontal. */
+@Composable
+fun KodeBlok(kode: String, modifier: Modifier = Modifier) {
+    Card(modifier = modifier.fillMaxWidth()) {
+        Text(
+            text = kode.trimIndent(),
+            fontFamily = FontFamily.Monospace,
+            fontSize = 12.sp,
+            lineHeight = 18.sp,
+            modifier = Modifier
+                .background(MaterialTheme.colorScheme.surfaceVariant)
+                .horizontalScroll(rememberScrollState())
+                .padding(12.dp)
+        )
+    }
+}
+
+/** Satu baris tabel: label tebal di atas, keterangan di bawah. */
+@Composable
+fun BarisTabel(label: String, keterangan: String) {
+    Column(
+        modifier = Modifier.fillMaxWidth().padding(vertical = 6.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        Text(text = label, style = MaterialTheme.typography.labelLarge)
+        Text(
+            text = keterangan,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+    }
+}
+
+/** Tabel dua kolom untuk seluruh tabel modul ini. */
+@Composable
+fun Tabel(judul: String, baris: List<Pair<String, String>>, modifier: Modifier = Modifier) {
+    Column(modifier = modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+        Text(
+            text = judul,
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier.semantics { heading() }
+        )
+        baris.forEach { (label, keterangan) -> BarisTabel(label, keterangan) }
+    }
+}
+
+/** Ringkasan Tabel 8 modul: kesalahan umum navigasi dan perbaikannya. */
+@Composable
+fun VerifikasiRingkas() {
+    Tabel(
+        "Kesalahan umum dan perbaikannya",
+        kesalahanUmumNavigasi.map { it.kasus to "${it.gejala} → ${it.perbaikan}" }
+    )
+}
+

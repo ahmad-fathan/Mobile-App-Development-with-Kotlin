@@ -20,6 +20,7 @@ Modul 02–05 berisi **Kotlin murni (`.kt`)** yang dapat dikompilasi dan dijalan
 | 11 | UI/UX and Adaptive Layout | Proyek Android Studio |
 | 12 | MVVM and ViewModel in Jetpack Compose | Proyek Android Studio |
 | 13 | UI State, StateFlow, and Unidirectional Data Flow | Proyek Android Studio |
+| 15 | Navigation with Jetpack Compose | Proyek Android Studio |
 
 ## Struktur folder
 
@@ -652,6 +653,61 @@ java -jar verifikasi.jar
 
 Keluaran yang diharapkan: `Kasus uji: 64/64 lulus`.
 
+#### Tampilan modul 15 — TaskNav (navigasi)
+
+`MainActivity` memasang `AppNavHost()`, yang memegang `NavController` dan mendaftarkan lima
+destination: **TaskList** (start), **TaskDetail**, **About**, **CourseTasks**, dan **Welcome**.
+Layar hanya menerima lambda event, jadi tiap layar masih punya `@Preview` sendiri.
+
+Untuk mencoba layar bab atau Latihan 6, ganti pemanggilan di dalam `setContent { }`:
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `AppNavHost()` | `navigation/AppNavHost.kt` | 9.4, 10 |
+| `AppNavHost(startDestination = Welcome)` | `navigation/AppNavHost.kt` | Latihan 6 |
+| `TaskListScreen(tasks, onTaskClick, onAboutClick)` | `ui/TaskListScreen.kt` | 9.2 |
+| `TaskDetailScreen(taskId, onBack, onOpenCourse)` | `ui/TaskDetailScreen.kt` | 9.3 |
+| `CourseTasksScreen(course, onTaskClick, onBack)` | `ui/CourseTasksScreen.kt` | Latihan 4 |
+| `AboutScreen(onBack)` | `ui/AboutScreen.kt` | Latihan 3 |
+| `WelcomeScreen(onGetStarted)` | `ui/WelcomeScreen.kt` | Latihan 6 |
+| `MengapaNavigasiScreen()` | `bab/bab-01-…` | 2, 3 |
+| `BackStackDanRouteScreen()` | `bab/bab-02-…` | 4, 5, 6 |
+| `MembangunGraphScreen()` | `bab/bab-03-…` | 7 |
+| `KirimDataScreen()` | `bab/bab-04-…` | 8 |
+| `AplikasiDanKesalahanScreen()` | `bab/bab-05-…` | 9–13 |
+| `LatihanScreen()` | `latihan/latihan-akhir.kt` | Latihan 1, 2, 5 |
+
+Route ditulis type-safe: `TaskDetail(val taskId: Int)` menjadi argumen navigasi tanpa kunci string,
+dan yang dikirim hanya **ID** — layar detail mengambil data terbaru dari `TaskRepository`.
+
+Perilaku yang dapat diuji di emulator: ketuk tugas → layar `Task #2` berisi `Computer Networks`;
+**Back** di app bar kembali ke daftar; membuka tugas 3 lalu memutar layar tetap menampilkan
+`Quiz: SQL joins` dengan `Status: done`; Back sistem di layar daftar menutup aplikasi.
+
+`kotlinx-serialization-json` ditambahkan sebagai dependensi, bukan hanya plugin, karena
+`toRoute()`/`saveState` membutuhkannya saat runtime.
+
+#### Menjalankan verifikasi aturan modul 15 (tanpa emulator)
+
+`verifikasi.kt` memuat model back stack sebagai fungsi murni — `push`, `pop`, `pushDenganPopUpTo`,
+`pushSingleTop` — plus seluruh tabel modul:
+
+```bash
+# dari root repositori
+./jalankan.sh 15 perilaku
+
+# atau langsung
+cd modul-15-navigation-jetpack-compose
+kotlinc app/src/main/java/com/example/tasknav/verifikasi.kt -include-runtime -d verifikasi.jar
+java -jar verifikasi.jar
+```
+
+Keluaran yang diharapkan: `Kasus uji: 39/39 lulus`, didahului label back stack pada tiga momen
+(Gambar 3) dan perbandingan dengan/tanpa `popUpTo` (Gambar 5).
+
+Untuk menguji Tabel 7 modul **pada perangkat sungguhan**, ada skrip ADB terpisah di luar repo:
+`~/Documents/SOURCE CODE/_alat-uji/probe-modul15.py` (18/18 lulus, tangkapan layar `/tmp/m15-*.png`).
+
 ├── modul-13-ui-state-stateflow-dan-unidirectional-data-flow/ # proyek Android Studio
 │   ├── settings.gradle.kts
 │   ├── build.gradle.kts
@@ -675,6 +731,32 @@ Keluaran yang diharapkan: `Kasus uji: 64/64 lulus`.
 │           │   ├── bab/bab-04-umur-state-dan-batas-stateflow.kt
 │           │   ├── bab/bab-05-kesalahan-umum-dan-praktik.kt
 │           │   ├── latihan/latihan-akhir.kt
+│           │   └── ui/theme/
+│           └── res/
+├── modul-15-navigation-jetpack-compose/         # proyek Android Studio
+│   ├── settings.gradle.kts                      # rootProject.name = "TaskNav"
+│   ├── build.gradle.kts                         # + kotlin-serialization apply false
+│   ├── gradle.properties
+│   ├── gradle/libs.versions.toml                # + navigation-compose, kotlinx-serialization-json
+│   ├── gradlew, gradlew.bat, gradle/wrapper/
+│   └── app/
+│       ├── build.gradle.kts
+│       └── src/main/
+│           ├── AndroidManifest.xml
+│           ├── java/com/example/tasknav/
+│           │   ├── MainActivity.kt              # setContent { TaskNavTheme { AppNavHost() } }
+│           │   ├── data/TaskRepository.kt       # model Task + tiga data contoh (Bagian 9.1)
+│           │   ├── navigation/Routes.kt         # TaskList, TaskDetail, About, CourseTasks, Welcome (7.1)
+│           │   ├── navigation/AppNavHost.kt     # navigation graph (7.2–7.4, 9.4, 10)
+│           │   ├── ui/TaskListScreen.kt         # layar daftar + tombol About (9.2)
+│           │   ├── ui/TaskDetailScreen.kt       # layar detail + tombol CourseTasks (9.3)
+│           │   ├── ui/CourseTasksScreen.kt      # Latihan 4
+│           │   ├── ui/AboutScreen.kt            # Latihan 3
+│           │   ├── ui/WelcomeScreen.kt          # Latihan 6
+│           │   ├── TampilanBersama.kt           # JudulBab / KodeBlok / Tabel
+│           │   ├── verifikasi.kt                # model back stack + tabel modul (39 pemeriksaan)
+│           │   ├── bab/bab-01 … bab-05          # Bagian 2–13 modul
+│           │   ├── latihan/latihan-akhir.kt     # jawaban Latihan 1, 2, 5
 │           │   └── ui/theme/
 │           └── res/
 
