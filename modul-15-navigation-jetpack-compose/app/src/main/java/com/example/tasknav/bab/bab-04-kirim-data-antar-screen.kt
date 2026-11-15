@@ -53,6 +53,13 @@ fun KirimDataScreen(modifier: Modifier = Modifier) {
             )
         )
 
+        Text(
+            "Enum dapat langsung dipakai sebagai argumen. Beri anotasi @Keep pada deklarasi enum " +
+                "agar tidak terhapus ketika build diperkecil (minify).",
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
         Text("8.2 Mengirim dan menerima argumen", style = MaterialTheme.typography.titleSmall)
         KodeBlok(
             """
@@ -100,7 +107,7 @@ fun KirimDataScreen(modifier: Modifier = Modifier) {
             navController.navigate(TaskList())                  // showDone = true
             navController.navigate(TaskList(showDone = false))  // nilai diganti
             NavHost(navController, startDestination = TaskList()) { }
-            // Nama nullable juga boleh: val query: String? = null
+            // Tipe nullable juga boleh: val query: String? = null
             """
         )
 

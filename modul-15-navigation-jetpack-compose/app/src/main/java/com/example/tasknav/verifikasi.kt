@@ -110,11 +110,17 @@ val perbandinganRoute: List<PerbandinganRoute> = listOf(
 // 4. Tabel 5 — tipe argumen yang didukung
 // ---------------------------------------------------------------------------
 
-/** Tipe yang langsung dapat dipakai sebagai argumen navigasi. */
-val tipeArgumenLangsung: Set<String> = setOf("Int", "Long", "Float", "Double", "Boolean", "String")
+/** Enam tipe dasar argumen navigasi. */
+val tipeDasar: Set<String> = setOf("Int", "Long", "Float", "Double", "Boolean", "String")
 
-/** Tipe yang membutuhkan kerja tambahan. */
-val tipeArgumenTambahan: Set<String> = setOf("Kelas buatan sendiri", "Enum", "Nullable dari tipe dasar", "List")
+/** Bentuk turunan dari tipe dasar yang juga didukung langsung sejak Navigation 2.8. */
+val bentukTurunanDidukung: Set<String> = setOf("Enum", "Nullable dari tipe dasar", "List dari tipe dasar")
+
+/** Tipe yang langsung dapat dipakai sebagai argumen navigasi (Tabel 5, kolom kiri). */
+val tipeArgumenLangsung: Set<String> = tipeDasar + bentukTurunanDidukung
+
+/** Tipe yang membutuhkan kerja tambahan berupa `NavType` khusus (Tabel 5, kolom kanan). */
+val tipeArgumenTambahan: Set<String> = setOf("Kelas buatan sendiri")
 
 fun didukungLangsung(tipe: String): Boolean = tipe in tipeArgumenLangsung
 
@@ -249,9 +255,12 @@ private fun verifikasiPerilakuModul15(): Boolean {
     // --- Argumen: kirim ID, bukan objek -----------------------------------
     cek("Int dan String didukung langsung", didukungLangsung("Int") && didukungLangsung("String"))
     cek("kelas buatan sendiri butuh kerja tambahan", !didukungLangsung("Kelas buatan sendiri"))
-    cek("List butuh kerja tambahan", !didukungLangsung("List"))
-    cek("enam tipe dasar yang didukung", tipeArgumenLangsung.size == 6)
-    cek("empat jenis tipe tambahan tercatat", tipeArgumenTambahan.size == 4)
+    cek("enum, nullable, dan List dari tipe dasar didukung langsung",
+        didukungLangsung("Enum") && didukungLangsung("Nullable dari tipe dasar") &&
+            didukungLangsung("List dari tipe dasar"))
+    cek("enam tipe dasar yang didukung", tipeDasar.size == 6 && tipeDasar.all { didukungLangsung(it) })
+    cek("hanya kelas buatan sendiri yang butuh NavType khusus",
+        tipeArgumenTambahan == setOf("Kelas buatan sendiri"))
 
     val routeDenganId = Entri("TaskDetail", mapOf("taskId" to "2"))
     cek("argumen hanya membawa ID, bukan seluruh objek", routeDenganId.argumen.size == 1)

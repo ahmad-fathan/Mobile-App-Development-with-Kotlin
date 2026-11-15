@@ -23,11 +23,11 @@ private val LightColorScheme = lightColorScheme(
 )
 
 /**
- * Pembungkus tema proyek CampusCourseBrowser.
+ * Pembungkus tema proyek TaskNav.
  *
  * Tema ini sama dengan modul Compose sebelumnya; yang berubah hanya namanya, karena
  * setiap modul disalin menjadi proyek mandiri dengan paket baru
- * (`com.example.tasknav`). Modul 11 tidak mengubah tema.
+ * (`com.example.tasknav`). Modul 15 tidak mengubah tema.
  */
 @Composable
 fun TaskNavTheme(
