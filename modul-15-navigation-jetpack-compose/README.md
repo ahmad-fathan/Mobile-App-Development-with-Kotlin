@@ -49,10 +49,8 @@ Pemetaan berkas → bagian modul:
 
 ```toml
 navigationCompose = "2.10.2"
-kotlinxSerialization = "1.9.0"
 
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
-kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
 
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 ```
@@ -100,8 +98,8 @@ Yang diperiksa `verifikasi.kt` (Kotlin stdlib saja, tanpa Compose maupun Android
 
 - push/pop back stack: entri teratas = layar yang terlihat, Back pada start destination menutup aplikasi;
 - `popUpTo<Target>` dengan dan tanpa `inclusive` (Gambar 5) serta `launchSingleTop` saat ketukan ganda;
-- aturan argumen: `Int`/`String` langsung didukung, kelas buatan sendiri/`List` butuh kerja tambahan,
-  dan entri route hanya membawa ID;
+- aturan argumen: tipe dasar, enum, nullable, dan `List` dari tipe dasar langsung didukung;
+  hanya kelas buatan sendiri yang butuh `NavType` khusus; entri route hanya membawa ID;
 - seluruh tabel modul: Tabel 1 (lima komponen), Tabel 2 (route string vs type-safe),
   Tabel 4 (cara kembali), Tabel 5 (tipe argumen), Tabel 6 (opsi back stack),
   Tabel 7 (skenario uji), Tabel 8 (kesalahan umum), dan perbedaan Navigation 3.

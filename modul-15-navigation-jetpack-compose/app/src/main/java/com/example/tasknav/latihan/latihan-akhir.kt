@@ -83,17 +83,21 @@ fun latihan2Jawaban(): Triple<String, String, String> {
 
 /**
  * Teman menulis `navController.navigate(TaskDetail(taskId = 1))` langsung di badan composable
- * `TaskListScreen`. Akibatnya, pemanggilan itu berjalan pada SETIAP recomposition — termasuk
- * recomposition yang dipicu oleh navigasi itu sendiri — sehingga Detail(1) ditumpuk berulang kali
- * dan tombol Back harus ditekan berkali-kali sebelum kembali ke daftar.
+ * `TaskListScreen`. Akibatnya, pemanggilan itu berjalan pada SETIAP composition dan recomposition,
+ * sehingga Detail(1) bisa ditumpuk lebih dari sekali. Lebih parah lagi, setiap kali pengguna menekan
+ * Back dan TaskList tampil kembali, badan composable dijalankan ulang dan Detail(1) langsung terbuka
+ * lagi: pengguna terjebak dan tidak pernah bisa kembali ke daftar.
  *
- * Perbaikan: pindahkan pemanggilan ke dalam callback event (mis. tombol "Open first task"),
- * atau bila memang ingin membuka otomatis sekali, bungkus dengan `LaunchedEffect(Unit) { ... }`
- * di NavHost — bukan di badan composable yang dieksekusi tiap recomposition.
+ * Perbaikan: pindahkan pemanggilan ke dalam callback event (mis. tombol "Open first task").
+ * `LaunchedEffect(Unit)` saja TIDAK cukup, karena destination TaskList keluar dari composition saat
+ * Detail tampil, lalu efeknya berjalan lagi ketika pengguna kembali. Bila memang harus terbuka
+ * otomatis sekali, simpan penanda dengan `rememberSaveable` dan periksa sebelum memanggil navigate().
  */
 fun latihan5Penjelasan(): Pair<String, String> =
-    "navigate() di badan composable berjalan setiap recomposition → layar ditumpuk berulang" to
-        "Pindahkan ke lambda event, atau LaunchedEffect(Unit) di NavHost"
+    "navigate() di badan composable berjalan setiap (re)composition → Detail(1) ditumpuk, " +
+        "dan setiap kembali ke daftar Detail(1) terbuka lagi sehingga pengguna terjebak" to
+        "Panggil navigate() hanya di lambda event; bila harus otomatis sekali, " +
+        "pakai penanda rememberSaveable (LaunchedEffect(Unit) saja tetap terulang)"
 
 // ---------------------------------------------------------------------------
 // Layar ringkasan jawaban
