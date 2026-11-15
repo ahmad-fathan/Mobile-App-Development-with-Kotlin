@@ -90,12 +90,3 @@ fun Tabel(judul: String, baris: List<Pair<String, String>>, modifier: Modifier =
     }
 }
 
-/** Ringkasan Tabel 8 modul: kesalahan umum navigasi dan perbaikannya. */
-@Composable
-fun VerifikasiRingkas() {
-    Tabel(
-        "Kesalahan umum dan perbaikannya",
-        kesalahanUmumNavigasi.map { it.kasus to "${it.gejala} → ${it.perbaikan}" }
-    )
-}
-
