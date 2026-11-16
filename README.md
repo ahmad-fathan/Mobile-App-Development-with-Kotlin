@@ -19,6 +19,7 @@ Source code contoh dan latihan untuk mata kuliah **Pengembangan Aplikasi Bergera
 | 12 | MVVM and ViewModel in Jetpack Compose | Proyek Android Studio |
 | 13 | UI State, StateFlow, and Unidirectional Data Flow | Proyek Android Studio |
 | 15 | Navigation with Jetpack Compose | Proyek Android Studio |
+| 15s | Navigation with Jetpack Compose — versi sederhana | Proyek Android Studio |
 
 ## Struktur
 
@@ -26,6 +27,8 @@ Setiap modul berada di folder `modul-<nomor>-<judul>/`. Di dalamnya, satu bagian
 
 - **Modul 02–05**: berkas Kotlin biasa dengan `Main.kt` sebagai titik masuk.
 - **Modul 06 ke atas**: proyek Android Studio (Jetpack Compose). Kode bab ada di `app/src/main/java/<paket>/bab/`.
+- **Akhiran `s`** pada nomor modul (mis. `15s`) menandai versi ringkas dari modul yang sama, mis.
+  `modul-15-navigation-jetpack-compose-sederhana/`.
 
 ## Menjalankan
 
@@ -52,7 +55,37 @@ Modul 09 ke atas juga menyertakan `verifikasi.kt` yang bisa dijalankan tanpa emu
 
 ```bash
 ./jalankan.sh 12 perilaku
+./jalankan.sh 15s perilaku     # modul 15 versi sederhana
 ```
+
+### Modul 15 versi sederhana (`15s`)
+
+`modul-15-navigation-jetpack-compose-sederhana/` mengikuti naskah modul 15 apa adanya: tiga komponen
+navigasi (NavController, NavHost, NavGraph), back stack, praktik tiga layar, lalu mengirim argumen
+antarlayar — tanpa katalog tugas, data layer, atau 39 pemeriksaan milik
+`modul-15-navigation-jetpack-compose/`. Proyeknya **mandiri**: `BasicNavigation`, paket
+`com.example.basicnavigation`, tema `BasicNavigationTheme`.
+
+Aplikasinya dibuka lewat menu (`MenuPraktik()`): Praktik 1 (navigasi dasar), Praktik 2 (kirim argumen),
+Materi bab 1–5, dan Latihan Akhir. Tombol Back di dalam praktik kembali ke menu.
+
+| Composable | Berkas | Bagian modul |
+| --- | --- | --- |
+| `BasicNavigationApp()` | `navigation/BasicNavigationApp.kt` | 4.5 |
+| `Praktik2App()` | `navigation/Praktik2App.kt` | 6.5 (`MainScreen()` di naskah) |
+| `HomeScreen()`, `ProfileScreen()`, `DetailScreen()` | `ui/HomeScreen.kt`, `ui/ProfileScreen.kt`, `ui/DetailScreen.kt` | 4.4 |
+| `OrderFormScreen(onNavigateToDetails)` | `ui/OrderFormScreen.kt` | 6.4 / Latihan 1 |
+| `OrderDetailsScreen(navController, productName, quantity)` | `ui/OrderDetailsScreen.kt` | 6.4 / Latihan 2 |
+| `Bab1KonsepNavigasi()` … `Bab5Praktik2()` | `bab/bab-01 … bab-05` | 2–6 |
+| `LatihanScreen()` | `ui/LatihanScreen.kt` | Latihan 1–5 + pengayaan |
+
+Penyimpangan yang disengaja agar cukup satu proyek: dua praktik digabung (naskah meminta dua proyek),
+layar formulir bernama `OrderFormScreen` (naskah menamainya `HomeScreen`, sudah dipakai praktik 1),
+`MainScreen()` menjadi `Praktik2App()`, tombol Submit dinonaktifkan saat isian belum valid, dan isian
+disimpan dengan `rememberSaveable`.
+
+Bukti: `./jalankan.sh 15s perilaku` → `SEMUA OK (24 cek)`; `assembleDebug` bersih tanpa warning;
+`_alat-uji/probe-modul15-sederhana.py` → 24/24 di emulator, 0 FATAL.
 
 ## Penggunaan
 

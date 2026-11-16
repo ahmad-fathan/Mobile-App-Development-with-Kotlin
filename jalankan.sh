@@ -12,6 +12,7 @@
 #   ./jalankan.sh 12 perilaku     # periksa aturan data layer + MVVM modul 12
 #   ./jalankan.sh 13 perilaku     # periksa aturan UI state + StateFlow + UDF modul 13
 #   ./jalankan.sh 15 perilaku     # periksa aturan navigation + back stack modul 15
+#   ./jalankan.sh 15s perilaku    # modul 15 versi sederhana (folder *-sederhana)
 #
 # Modul konsol (02–05) memakai Kotlin compiler bawaan Android Studio bila ada,
 # sehingga tidak perlu memasang kotlinc terpisah. Modul Android (punya gradlew)
@@ -23,11 +24,17 @@ MODUL="${1:-02}"
 PERINTAH="${2:-}"
 
 # --- cari folder modul ------------------------------------------------------
+# Suffix "s" = versi sederhana dari modul bernomor sama (mis. 15s ->
+# modul-15-*-sederhana). Tanpa suffix, pola lama tetap dipakai sehingga
+# `./jalankan.sh 15` selalu menunjuk modul versi lengkap.
 FOLDER=""
-for kandidat in modul-"$MODUL"-*; do
+for kandidat in modul-"${MODUL%s}"-*; do
     if [ -d "$kandidat" ]; then
-        FOLDER="$kandidat"
-        break
+        case "$MODUL" in
+            *s) case "$kandidat" in *-sederhana) FOLDER="$kandidat" ;; esac ;;
+            *) case "$kandidat" in *-sederhana) ;; *) FOLDER="$kandidat" ;; esac ;;
+        esac
+        [ -n "$FOLDER" ] && break
     fi
 done
 
