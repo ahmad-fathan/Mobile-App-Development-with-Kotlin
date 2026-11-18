@@ -22,71 +22,31 @@ Source code contoh dan latihan untuk mata kuliah **Pengembangan Aplikasi Bergera
 | 15s | Navigation with Jetpack Compose — versi sederhana | Proyek Android Studio |
 | 16 | Aplikasi Multi-Screen dan Pola Navigasi | Proyek Android Studio |
 
-## Struktur
-
-Setiap modul berada di folder `modul-<nomor>-<judul>/`. Di dalamnya, satu bagian modul menjadi satu berkas `bab-<nomor>-<judul>.kt`, dan latihan akhir ada di `latihan/latihan-akhir.kt`.
-
-- **Modul 02–05**: berkas Kotlin biasa dengan `Main.kt` sebagai titik masuk.
-- **Modul 06 ke atas**: proyek Android Studio (Jetpack Compose). Kode bab ada di `app/src/main/java/<paket>/bab/`.
-- **Akhiran `s`** pada nomor modul (mis. `15s`) menandai versi ringkas dari modul yang sama, mis.
-  `modul-15-navigation-jetpack-compose-sederhana/`.
+Setiap modul berada di folder `modul-<nomor>-<judul>/` dan berdiri sendiri. Akhiran `s` menandai versi ringkas dari modul bernomor sama.
 
 ## Menjalankan
 
-### Modul konsol (02–05)
-
-Dari root repositori:
+**Modul konsol (02–05)** — dari root repositori:
 
 ```bash
-./jalankan.sh 03              # menu contoh modul 03
+./jalankan.sh 03              # jalankan contoh
 ./jalankan.sh 03 verifikasi   # pemeriksaan otomatis
 ```
 
-Skrip ini memakai `kotlinc` bawaan Android Studio bila ada, atau `kotlinc` dari `PATH`. Cara lain: buka folder modul di Android Studio, buka `Main.kt`, lalu klik **Run** pada `fun main`.
+**Modul Android (06 ke atas)** — buka **folder modul** (bukan root) di Android Studio, tunggu Gradle sync, lalu Run. Dari terminal:
 
-### Modul Android (06 ke atas)
+```bash
+cd modul-16-aplikasi-multi-screen-dan-pola-navigasi
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+./gradlew assembleDebug
+```
 
-1. Di Android Studio, pilih **File → Open** dan buka **folder modul** (bukan root repositori).
-2. Tunggu Gradle sync selesai.
-3. Pilih emulator atau perangkat, lalu klik **Run**.
-
-Untuk mencoba contoh dari bab tertentu, ganti composable yang dipanggil di dalam `setContent { }` pada `MainActivity.kt`.
-
-Modul 09 ke atas juga menyertakan `verifikasi.kt` yang bisa dijalankan tanpa emulator:
+Modul 09 ke atas menyertakan `verifikasi.kt` yang bisa dijalankan tanpa emulator:
 
 ```bash
 ./jalankan.sh 12 perilaku
-./jalankan.sh 15s perilaku     # modul 15 versi sederhana
+./jalankan.sh 16 perilaku
 ```
-
-### Modul 15 versi sederhana (`15s`)
-
-`modul-15-navigation-jetpack-compose-sederhana/` mengikuti naskah modul 15 apa adanya: tiga komponen
-navigasi (NavController, NavHost, NavGraph), back stack, praktik tiga layar, lalu mengirim argumen
-antarlayar — tanpa katalog tugas, data layer, atau 39 pemeriksaan milik
-`modul-15-navigation-jetpack-compose/`. Proyeknya **mandiri**: `BasicNavigation`, paket
-`com.example.basicnavigation`, tema `BasicNavigationTheme`.
-
-Aplikasinya dibuka lewat menu (`MenuPraktik()`): Praktik 1 (navigasi dasar), Praktik 2 (kirim argumen),
-Materi bab 1–5, dan Latihan Akhir. Tombol Back di dalam praktik kembali ke menu.
-
-| Composable | Berkas | Bagian modul |
-| --- | --- | --- |
-| `BasicNavigationApp()` | `navigation/BasicNavigationApp.kt` | 4.5 |
-| `Praktik2App()` | `navigation/Praktik2App.kt` | 6.5 (`MainScreen()` di naskah) |
-| `HomeScreen()`, `ProfileScreen()`, `DetailScreen()` | `ui/HomeScreen.kt`, `ui/ProfileScreen.kt`, `ui/DetailScreen.kt` | 4.4 |
-| `OrderFormScreen(onNavigateToDetails)` | `ui/OrderFormScreen.kt` | 6.4 / Latihan 1 |
-| `OrderDetailsScreen(navController, productName, quantity)` | `ui/OrderDetailsScreen.kt` | 6.4 / Latihan 2 |
-| `Bab1KonsepNavigasi()` … `Bab5Praktik2()` | `bab/bab-01 … bab-05` | 2–6 |
-| `LatihanScreen()` | `ui/LatihanScreen.kt` | Latihan 1–5 + pengayaan |
-
-Penyimpangan yang disengaja agar cukup satu proyek: dua praktik digabung (naskah meminta dua proyek),
-layar formulir bernama `OrderFormScreen` (naskah menamainya `HomeScreen`, sudah dipakai praktik 1),
-`MainScreen()` menjadi `Praktik2App()`, tombol Submit dinonaktifkan saat isian belum valid, dan isian
-disimpan dengan `rememberSaveable`.
-
-Bukti: `./jalankan.sh 15s perilaku` → `SEMUA OK (24 cek)`; `assembleDebug` bersih tanpa warning;
-`_alat-uji/probe-modul15-sederhana.py` → 24/24 di emulator, 0 FATAL.
 
 ## Penggunaan
 
