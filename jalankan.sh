@@ -13,6 +13,7 @@
 #   ./jalankan.sh 13 perilaku     # periksa aturan UI state + StateFlow + UDF modul 13
 #   ./jalankan.sh 15 perilaku     # periksa aturan navigation + back stack modul 15
 #   ./jalankan.sh 15s perilaku    # modul 15 versi sederhana (folder *-sederhana)
+#   ./jalankan.sh 16 perilaku     # periksa aturan multi-screen + back stack modul 16
 #
 # Modul konsol (02–05) memakai Kotlin compiler bawaan Android Studio bila ada,
 # sehingga tidak perlu memasang kotlinc terpisah. Modul Android (punya gradlew)
@@ -54,6 +55,12 @@ if [ -x "$FOLDER/gradlew" ]; then
     if [ "$PERINTAH" = "verifikasi" ]; then
         ./gradlew assembleDebug
     elif [ "$PERINTAH" = "perilaku" ]; then
+        # Modul yang mendaftarkan tugas Gradle `verifikasi` (mis. modul 16) memakai Gradle,
+        # karena kode yang diuji memerlukan androidx/kotlinx di classpath.
+        if grep -q 'tasks.register<JavaExec>("verifikasi")' app/build.gradle.kts 2>/dev/null; then
+            ./gradlew verifikasi
+            exit $?
+        fi
         # Modul Android yang menyertakan verifikasi.kt (Kotlin stdlib saja) dapat
         # diperiksa tanpa Gradle dan tanpa emulator: kompilasi berkas itu sendiri.
         KOTLINC_AS="/Applications/Android Studio.app/Contents/plugins/Kotlin/kotlinc/bin/kotlinc"

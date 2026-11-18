@@ -20,6 +20,7 @@ Source code contoh dan latihan untuk mata kuliah **Pengembangan Aplikasi Bergera
 | 13 | UI State, StateFlow, and Unidirectional Data Flow | Proyek Android Studio |
 | 15 | Navigation with Jetpack Compose | Proyek Android Studio |
 | 15s | Navigation with Jetpack Compose — versi sederhana | Proyek Android Studio |
+| 16 | Aplikasi Multi-Screen dan Pola Navigasi | Proyek Android Studio |
 
 ## Struktur
 
