@@ -81,13 +81,41 @@ if [ -x "$FOLDER/gradlew" ]; then
         # verifikasi.kt hanya memakai Kotlin stdlib, tetapi ia MEMAKAI model data layer di paket
         # akar (StudyTask, TasksUiState, repository). Ikutkan berkas pakar akar yang tidak
         # mengimpor AndroidX, supaya aturan yang diuji adalah kode yang benar-benar dipakai app.
+        # Akar package (app/src/main/java): buang bagian path sepanjang nama package.
+        PAKET="$(grep -m1 '^package ' "$VERIFIKASI" | sed 's/^package //' | tr -d '\r')"
+        AKAR_SUMBER="${VERIFIKASI%/${PAKET//.//}/verifikasi.kt}"
+        # verifikasi.kt sendiri + SEMUA berkas .kt di pohon sumber yang murni Kotlin (tanpa
+        # AndroidX, tanpa anotasi plugin seperti @Serializable) — model data, repository, dan UI
+        # state bisa berada di subpackage. Berkas ber-@Serializable butuh plugin compiler, jadi
+        # dilewati karena verifikasi hanya menguji aturan, bukan route.
         BERKAS=("$VERIFIKASI")
         while IFS= read -r berkas; do
             [ "$berkas" = "$VERIFIKASI" ] && continue
-            grep -q "^import androidx" "$berkas" || BERKAS+=("$berkas")
-        done < <(find "$(dirname "$VERIFIKASI")" -maxdepth 1 -name '*.kt')
-        "$KOTLINC" "${BERKAS[@]}" -include-runtime -d build/verifikasi/verifikasi.jar
-        java -jar build/verifikasi/verifikasi.jar
+            grep -q "^import androidx" "$berkas" && continue
+            grep -q "@Serializable" "$berkas" && continue
+            BERKAS+=("$berkas")
+        done < <(find "$AKAR_SUMBER" -name '*.kt')
+        # Modul yang memakai kotlinx.coroutines (modul 17) butuh jar coroutines saat kompilasi
+        # DAN saat dijalankan. Jar-nya diambil dari cache Gradle karena proyek ini tidak
+        # menambahkannya sebagai dependensi aplikasi.
+        JAR_COROUTINES=""
+        CP_KOTLINC=""
+        if grep -lq "kotlinx\.coroutines" "${BERKAS[@]}" 2>/dev/null; then
+            JAR_COROUTINES="$(find "$HOME/.gradle/caches/modules-2/files-2.1/org.jetbrains.kotlinx/kotlinx-coroutines-core-jvm" -name 'kotlinx-coroutines-core-jvm-*.jar' ! -name '*-sources.jar' 2>/dev/null | head -1)"
+            if [ -n "$JAR_COROUTINES" ]; then
+                CP_KOTLINC="-cp $JAR_COROUTINES"
+            else
+                echo "kotlinx-coroutines-core-jvm tidak ditemukan di cache Gradle."
+                exit 1
+            fi
+        fi
+        "$KOTLINC" "${BERKAS[@]}" $CP_KOTLINC -include-runtime -d build/verifikasi/verifikasi.jar
+        if [ -n "$JAR_COROUTINES" ]; then
+            PAKET="$(grep -m1 '^package ' "$VERIFIKASI" | sed 's/^package //' | tr -d '\r')"
+            java -cp "build/verifikasi/verifikasi.jar:$JAR_COROUTINES" "${PAKET}.VerifikasiKt"
+        else
+            java -jar build/verifikasi/verifikasi.jar
+        fi
     elif [ -n "$PERINTAH" ]; then
         ./gradlew "$PERINTAH"
     else
