@@ -14,6 +14,8 @@
 #   ./jalankan.sh 15 perilaku     # periksa aturan navigation + back stack modul 15
 #   ./jalankan.sh 15s perilaku    # modul 15 versi sederhana (folder *-sederhana)
 #   ./jalankan.sh 16 perilaku     # periksa aturan multi-screen + back stack modul 16
+#   ./jalankan.sh 17 perilaku     # periksa aturan coroutine (sekuensial vs konkuren) modul 17
+#   ./jalankan.sh 18 perilaku     # periksa aturan REST API, JSON, dan Retrofit modul 18
 #
 # Modul konsol (02–05) memakai Kotlin compiler bawaan Android Studio bila ada,
 # sehingga tidak perlu memasang kotlinc terpisah. Modul Android (punya gradlew)

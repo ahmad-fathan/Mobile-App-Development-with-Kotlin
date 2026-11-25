@@ -22,6 +22,7 @@ Source code contoh dan latihan untuk mata kuliah **Pengembangan Aplikasi Bergera
 | 15s | Navigation with Jetpack Compose — versi sederhana | Proyek Android Studio |
 | 16 | Aplikasi Multi-Screen dan Pola Navigasi | Proyek Android Studio |
 | 17 | Kotlin Coroutines and Asynchronous Programming | Proyek Android Studio |
+| 18 | REST APIs, JSON, and Retrofit | Proyek Android Studio |
 
 Setiap modul berada di folder `modul-<nomor>-<judul>/` dan berdiri sendiri. Akhiran `s` menandai versi ringkas dari modul bernomor sama.
 
@@ -49,6 +50,7 @@ Modul 09 ke atas menyertakan `verifikasi.kt` yang bisa dijalankan tanpa emulator
 ./jalankan.sh 15s perilaku     # modul 15 versi sederhana
 ./jalankan.sh 16 perilaku
 ./jalankan.sh 17 perilaku      # coroutine: 28 pemeriksaan
+./jalankan.sh 18 perilaku      # REST/JSON/Retrofit: 42 pemeriksaan
 ```
 
 ## Penggunaan
